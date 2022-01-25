@@ -31,18 +31,23 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [
+  // {
+  //   path: '/',
+  //   redirect: '/login',
+  //   hidden: true
+  // },
+  // {
+  //   path: '/login',
+  //   component: () => import('@/views/login/index'),
+  //   hidden: true
+  // },
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
-    path: '/',
+    path: '/competition',
     component: Layout,
-    redirect: '/competition',
+    redirect: '/competition/list',
     children: [
       {
-        path: '/competition',
+        path: '/competition/list',
         component: () => import('@/views/competition/index'),
         name: '赛事管理',
         meta: { title: '赛事管理', icon: 'theme' }
