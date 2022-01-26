@@ -34,12 +34,12 @@ module.exports = {
     open: true,
     clientLogLevel: 'warning',
     proxy: {
-      '/api': {
+      '/bjss': {
         timeout: 300000,
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/bjss': ''
         }
       }
     }
