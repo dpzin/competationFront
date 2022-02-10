@@ -28,7 +28,6 @@
 
     <el-table
       :key="tableKey"
-      v-loading="listLoading"
       :data="list"
       border
       fit
@@ -37,7 +36,7 @@
     >
       <el-table-column
         type="index"
-        width="50"
+        width="30"
       />
       <el-table-column
         label="赛事名称"
@@ -132,7 +131,7 @@
           prop="address"
         >
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="photoUploadUrl"
             list-type="picture-card"
           >
             <i class="el-icon-plus" />
@@ -144,7 +143,7 @@
           prop="address"
         >
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="photoUploadUrl"
             list-type="picture-card"
           >
             <i class="el-icon-plus" />
@@ -178,7 +177,6 @@ export default {
     return {
       tableKey: 0,
       list: [],
-      listLoading: true,
       listQuery: {
         title: undefined
       },
@@ -206,46 +204,24 @@ export default {
   },
   created() {
     this.getList()
-    console.log('created')
   },
   methods: {
     getList() {
       this.listLoading = false
       getCompetitionList().then((res) => {
-        console.log('res', res)
+        this.list = res.data
       })
-      // this.list = [
-      //   {
-      //     id: "2c9abe3f7dbcc096017dbcc599a50001",
-      //     name: "test服务器",
-      //     status: "0",
-      //     address: "goodgood",
-      //     posterUrl:
-      //       "/image/competition/44d0257a-830a-42e9-ac1a-2d22b24d137e.png",
-      //     coverUrl:
-      //       "/image/competition/369bc7b5-82fb-47c1-9b5b-4fadfb184ea9.jpg",
-      //     userId: "111",
-      //     startTime: "2021-12-12",
-      //     endTime: "2021-12-13",
-      //     description: "goodgood",
-      //     createTime: "2021-12-15 14:26:46",
-      //     updateTime: "2021-12-15 14:26:46",
-      //   },
-      // ];
     },
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
     },
     resetTemp() {
-      this.temp = {
+      this.competition = {
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        name: '',
+        address: '',
+        startTime: ''
       }
     },
     handleCreate() {
