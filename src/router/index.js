@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Layout from '@/layout'
 
 Vue.use(Router)
-
-/* Layout */
-import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -45,12 +43,25 @@ export const constantRoutes = [
     path: '/competition',
     component: Layout,
     redirect: '/competition/list',
+    name: '赛事管理',
+    meta: { title: '赛事管理', icon: 'el-icon-s-operation' },
     children: [
       {
         path: '/competition/list',
         component: () => import('@/views/competition/index'),
-        name: '赛事管理',
-        meta: { title: '赛事管理', icon: 'theme' }
+        meta: { title: '新增赛事', icon: 'table' }
+      },
+      {
+        path: '/competition/competitors',
+        component: () => import('@/views/competition/competitors'),
+        name: '参赛选手',
+        meta: { title: '参赛选手', icon: 'el-icon-user' }
+      },
+      {
+        path: '/competition/battleTree',
+        component: () => import('@/views/competition/battleTree'),
+        name: '对战图',
+        meta: { title: 'battle', icon: 'tree' }
       }
     ]
   },
@@ -59,27 +70,6 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: 'Example', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: 'Table', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: 'Tree', icon: 'tree' }
-  //     }
-  //   ]
-  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
