@@ -50,20 +50,32 @@ export const constantRoutes = [
         path: '/competition/list',
         component: () => import('@/views/competition/index'),
         meta: { title: '新增赛事', icon: 'table' }
-      },
-      {
-        path: '/competition/competitors',
-        component: () => import('@/views/competition/competitors'),
-        name: '参赛选手',
-        meta: { title: '参赛选手', icon: 'el-icon-user' }
-      },
-      {
-        path: '/competition/battleTree',
-        component: () => import('@/views/competition/battleTree'),
-        name: '对战图',
-        meta: { title: 'battle', icon: 'tree' }
       }
     ]
+  },
+  {
+    path: '/competition/competitors',
+    component: () => import('@/views/competition/competitors'),
+    name: '参赛选手',
+    meta: { title: '参赛选手', icon: 'el-icon-user' }
+  },
+  {
+    path: '/competition/battleTree',
+    component: () => import('@/views/competition/battleTree'),
+    name: '对战图',
+    meta: { title: 'battle', icon: 'tree' }
+  },
+  {
+    path: '/competition/1v1battle',
+    component: () => import('@/views/competition/1v1battle'),
+    name: '1v1battle',
+    meta: { title: '1v1battle', icon: '' }
+  },
+  {
+    path: '/competition/champion',
+    component: () => import('@/views/competition/champion'),
+    name: 'champion',
+    meta: { title: 'champion', icon: '' }
   },
   {
     path: '/404',
@@ -76,7 +88,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
