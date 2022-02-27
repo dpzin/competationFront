@@ -29,16 +29,16 @@ Vue.use(Router)
  * all roles can be accessed
  */
 export const constantRoutes = [
-  // {
-  //   path: '/',
-  //   redirect: '/login',
-  //   hidden: true
-  // },
-  // {
-  //   path: '/login',
-  //   component: () => import('@/views/login/index'),
-  //   hidden: true
-  // },
+  {
+    path: '/',
+    redirect: '/login',
+    hidden: true
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
   {
     path: '/competition',
     component: Layout,

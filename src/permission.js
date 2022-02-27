@@ -8,7 +8,8 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/competition/list', '/competition/competitors', '/competition/battleTree', '/competition/1v1battle', '/competition/champion'] // no redirect whitelist
+const whiteList = ['/login'] // no redirect whitelist
+// '/competition/list', '/competition/competitors', '/competition/battleTree', '/competition/1v1battle', '/competition/champion'
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
@@ -21,8 +22,7 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = getToken()
 
   if (hasToken) {
-    if (to.path === '/login') {
-      // if is logged in, redirect to the home page
+    if (to.path === '/') {
       next({ path: '/' })
       NProgress.done()
     } else {
@@ -32,14 +32,14 @@ router.beforeEach(async (to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+          // await store.dispatch('user/getInfo')
 
           next()
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          next(`/`)
           NProgress.done()
         }
       }

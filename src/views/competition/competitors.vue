@@ -15,6 +15,7 @@
         >{{ item.type }}</div>
       </div>
     </div>
+    <div class="logo" />
   </div>
 </template>
 
@@ -113,6 +114,16 @@ export default {
         color: #fbff97;
       }
     }
+  }
+  .logo {
+    width: 280px;
+    height: 90px;
+    background: url("../../assets/logo.png") no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    bottom: 50px;
+    right: 50%;
+    transform: translate(50%);
   }
 }
 </style>
