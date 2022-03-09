@@ -10,22 +10,22 @@
     />
     <sidebar class="sidebar-container" />
     <div class="main-container">
-      <!-- <div :class="{'fixed-header':fixedHeader}">
+      <div :class="{'fixed-header':fixedHeader}">
         <navbar />
-      </div> -->
+      </div>
       <app-main />
     </div>
   </div>
 </template>
 
 <script>
-import { Sidebar, AppMain } from './components'
+import { Sidebar, AppMain, Navbar } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
   name: 'Layout',
   components: {
-    // Navbar,
+    Navbar,
     Sidebar,
     AppMain
   },
@@ -64,7 +64,7 @@ export default {
 .main-container {
   height: 100%;
   .app-main {
-    height: calc(100vh);
+    height: calc(100vh - 50px);
   }
 }
 

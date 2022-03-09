@@ -1,31 +1,27 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-input
-        v-model="listQuery.title"
+    <div class="search">
+      <!-- <el-input
+        v-model="search"
         placeholder="名称"
         style="width: 200px;"
-        class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-button
-        class="filter-item"
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
       >
         搜索
-      </el-button>
+      </el-button> -->
       <el-button
-        class="filter-item"
         type="primary"
         icon="el-icon-create"
-        @click="handleCreate"
+        @click="handleCreate()"
       >
         创建赛事
       </el-button>
     </div>
-
     <el-table
       :key="tableKey"
       :data="list"
@@ -36,56 +32,73 @@
     >
       <el-table-column
         type="index"
-        width="30"
+        width="50"
+        align="center"
       />
       <el-table-column
         label="赛事名称"
+        prop="name"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="比赛日期">
-        <template slot-scope="{row}">
-          <span>{{ row.startTime }}</span>
+          <span
+            class="name"
+            @click="goToProject(row.id)"
+          >{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="地址"
+        label="比赛时间"
+        prop="startTime"
+        align="center"
+      />
+      <el-table-column
+        label="赛事项目"
+        prop="projects"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.address }}</span>
+          <el-tag
+            v-for="(item) in row.projects"
+            :key="item"
+            size="small"
+            class="tag"
+          >{{ item }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
-        label="描述"
+        label="参赛费用"
+        prop="price"
         align="center"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.description }}</span>
-        </template>
-      </el-table-column>
+      />
+      <el-table-column
+        label="赛事地址"
+        prop="address"
+        align="center"
+      />
       <el-table-column
         label="操作"
         align="center"
-        width="230"
-        class-name="small-padding fixed-width"
       >
-        <template slot-scope="{row,$index}">
+        <template slot-scope="{row}">
           <el-button
             type="primary"
             size="mini"
-            @click="handleUpdate(row)"
+            @click="handleDetail(row.id)"
+          >
+            查看详情
+          </el-button>
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleUpdate(row.id)"
           >
             编辑
           </el-button>
           <el-button
-            v-if="row.status!='deleted'"
             size="mini"
             type="danger"
-            @click="handleDelete(row,$index)"
+            @click="handleDelete(row.id)"
           >
             删除
           </el-button>
@@ -93,179 +106,131 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      :title="textMap[dialogStatus]"
-      :visible.sync="dialogFormVisible"
+      :title="detail.name"
+      :visible.sync="detailVisible"
+      width="50%"
     >
-      <el-form
-        ref="dataForm"
-        :rules="rules"
-        :model="competition"
-        label-position="left"
-        label-width="100px"
-        style="width: 400px; margin-left:50px;"
-      >
-        <el-form-item
-          label="赛事名称"
-          prop="name"
-        >
-          <el-input v-model="competition.name" />
-        </el-form-item>
-        <el-form-item
-          label="具体地址"
-          prop="address"
-        >
-          <el-input v-model="competition.address" />
-        </el-form-item>
-        <el-form-item
-          label="开始日期"
-          prop="startTime"
-        >
-          <el-date-picker
-            v-model="competition.startTime"
-            type="date"
-            placeholder="请输入比赛开始日期"
-          />
-        </el-form-item>
-        <el-form-item
+      <el-descriptions :column="2">
+        <el-descriptions-item label="比赛时间">{{ detail.startTime }}</el-descriptions-item>
+        <el-descriptions-item label="参赛费用">{{ detail.price }}</el-descriptions-item>
+        <el-descriptions-item label="赛事项目">
+          <el-tag
+            v-for="(item) in detail.projects"
+            :key="item"
+            size="small"
+            class="tag"
+          >{{ item }}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="赛事地址">{{ detail.address }}</el-descriptions-item>
+        <el-descriptions-item
+          label="赛事描述"
+          :span="2"
+        >{{ detail.description }}</el-descriptions-item>
+        <el-descriptions-item
           label="宣传海报"
-          prop="address"
+          :span="2"
         >
-          <el-upload
-            action="photoUploadUrl"
-            list-type="picture-card"
+          <img
+            :src="domain + detail.posterUrl"
+            width="148"
+            height="148"
           >
-            <i class="el-icon-plus" />
-          </el-upload>
-
-        </el-form-item>
-        <el-form-item
+        </el-descriptions-item>
+        <el-descriptions-item
           label="大屏背景"
-          prop="address"
+          :span="2"
         >
-          <el-upload
-            action="photoUploadUrl"
-            list-type="picture-card"
+          <img
+            :src="domain + detail.coverUrl"
+            width="148"
+            height="148"
           >
-            <i class="el-icon-plus" />
-          </el-upload>
-        </el-form-item>
-      </el-form>
-
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button
-          type="primary"
-          @click="dialogStatus==='create'?createData():updateData()"
-        >
-          确认
-        </el-button>
-      </div>
+        </el-descriptions-item>
+      </el-descriptions>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getCompetitionList } from '@/api/competition'
-// import parseTime from "@/utils/index";
+import { getCompetitionList, deleteCompetition, getCompetitionDetail } from '@/api/competition'
+
 export default {
   data() {
     return {
       tableKey: 0,
       list: [],
-      listQuery: {
-        title: undefined
-      },
-      competition: {},
-      dialogFormVisible: false,
-      dialogStatus: '',
-      textMap: {
-        update: '更新',
-        create: '创建'
-      },
-      rules: {
-        name: [{ required: true, message: '必填项', trigger: 'blur' }],
-        address: [{ required: true, message: '必填项', trigger: 'blur' }],
-        startTime: [
-          {
-            type: 'date',
-            required: true,
-            message: '必填项',
-            trigger: 'change'
-          }
-        ]
-      },
-      downloadLoading: false
+      detailVisible: false,
+      detail: {},
+      domain: process.env.VUE_APP_BASE_API
     }
   },
   created() {
     this.getList()
   },
   methods: {
+    // 获取赛事列表
     getList() {
       this.listLoading = false
       getCompetitionList().then((res) => {
         this.list = res.data
       })
     },
-    handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
-    },
-    resetTemp() {
-      this.competition = {
-        id: undefined,
-        name: '',
-        address: '',
-        startTime: ''
-      }
-    },
+    // 新增
     handleCreate() {
-      this.resetTemp()
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+      this.$router.push({
+        path: '/competition/addCompetition'
       })
     },
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
+    // 查看详情
+    handleDetail(id) {
+      getCompetitionDetail({ id }).then(res => {
+        this.detail = res.data
+        this.detailVisible = true
+      })
+    },
+    // 编辑
+    handleUpdate(id) {
+      this.$router.push({
+        path: '/competition/editCompetition',
+        query: {
+          id
         }
       })
     },
-    handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
+    // 删除
+    handleDelete(id) {
+      deleteCompetition({ id }).then(res => {
+        this.getList()
       })
     },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+    // 跳转至赛事项目管理
+    goToProject(id) {
+      this.$router.push({
+        path: '/competition/projectManagement',
+        query: {
+          id
         }
       })
-    },
-    handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  .search {
+    margin-bottom: 24px;
+  }
+  .tag {
+    margin-right: 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  .name {
+    color: #409eff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+</style>

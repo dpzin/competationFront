@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: '超级不羁赛事系统',
 
   /**
    * @type {boolean} true | false

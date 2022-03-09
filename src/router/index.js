@@ -49,7 +49,25 @@ export const constantRoutes = [
       {
         path: '/competition/list',
         component: () => import('@/views/competition/index'),
-        meta: { title: '新增赛事', icon: 'table' }
+        meta: { title: '赛事管理', icon: 'table' }
+      },
+      {
+        path: '/competition/addCompetition',
+        component: () => import('@/views/competition/addCompetition'),
+        meta: { title: '新增赛事', noCache: true, activeMenu: '/competition/list' },
+        hidden: true
+      },
+      {
+        path: '/competition/editCompetition',
+        component: () => import('@/views/competition/addCompetition'),
+        meta: { title: '编辑赛事', noCache: true, activeMenu: '/competition/list' },
+        hidden: true
+      },
+      {
+        path: '/competition/projectManagement',
+        component: () => import('@/views/competition/projectManagement'),
+        meta: { title: '项目管理', noCache: true, activeMenu: '/competition/list' },
+        hidden: true
       }
     ]
   },
@@ -63,7 +81,7 @@ export const constantRoutes = [
     path: '/competition/battleTree',
     component: () => import('@/views/competition/battleTree'),
     name: '对战图',
-    meta: { title: 'battle', icon: 'tree' }
+    meta: { title: 'battle', icon: 'tree-table' }
   },
   {
     path: '/competition/1v1battle',
