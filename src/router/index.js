@@ -73,26 +73,32 @@ export const constantRoutes = [
   },
   {
     path: '/competition/competitors',
-    component: () => import('@/views/competition/competitors'),
+    component: () => import('@/views/competition/bigScreen/competitors'),
     name: '参赛选手',
     meta: { title: '参赛选手', icon: 'el-icon-user' }
   },
   {
     path: '/competition/battleTree',
-    component: () => import('@/views/competition/battleTree'),
+    component: () => import('@/views/competition/bigScreen/battleTree'),
     name: '对战图',
     meta: { title: 'battle', icon: 'tree-table' }
   },
   {
     path: '/competition/1v1battle',
-    component: () => import('@/views/competition/1v1battle'),
+    component: () => import('@/views/competition/bigScreen/1v1battle'),
     name: '1v1battle',
     meta: { title: '1v1battle', icon: '' }
   },
   {
     path: '/competition/champion',
-    component: () => import('@/views/competition/champion'),
+    component: () => import('@/views/competition/bigScreen/champion'),
     name: 'champion',
+    meta: { title: 'champion', icon: '' }
+  },
+  {
+    path: '/test',
+    component: () => import('@/views/test'),
+    name: 'test',
     meta: { title: 'champion', icon: '' }
   },
   {

@@ -69,7 +69,7 @@ export default {
 .competitors {
   width: 100%;
   height: 100%;
-  background: url("../../assets/competition/bg.png") no-repeat;
+  background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   padding-top: 35px;
   .title {
@@ -105,7 +105,7 @@ export default {
         font-size: 27px;
         font-weight: 600;
         color: #ffffff;
-        background: url("../../assets/competition/user.svg") no-repeat;
+        background: url("../../../assets/competition/user.svg") no-repeat;
         background-size: 100% 100%;
       }
       .guest {
@@ -118,7 +118,7 @@ export default {
   .logo {
     width: 280px;
     height: 90px;
-    background: url("../../assets/logo.png") no-repeat;
+    background: url("../../../assets/logo.png") no-repeat;
     background-size: 100% 100%;
     position: fixed;
     bottom: 50px;

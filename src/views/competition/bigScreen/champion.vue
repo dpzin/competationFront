@@ -25,7 +25,7 @@ export default {
 .championPage {
   width: 100%;
   height: 100%;
-  background: url("../../assets/competition/bg.png") no-repeat;
+  background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   .title {
     text-align: center;
@@ -53,7 +53,7 @@ export default {
     width: 450px;
     height: 137px;
     line-height: 137px;
-    background: url("../../assets/competition/champion.png") no-repeat;
+    background: url("../../../assets/competition/champion.png") no-repeat;
     background-size: 100% 100%;
     text-align: center;
     font-size: 60px;
@@ -64,7 +64,7 @@ export default {
   .logo {
     width: 280px;
     height: 90px;
-    background: url("../../assets/logo.png") no-repeat;
+    background: url("../../../assets/logo.png") no-repeat;
     background-size: 100% 100%;
     position: fixed;
     bottom: 50px;

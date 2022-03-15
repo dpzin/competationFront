@@ -65,6 +65,10 @@ export default {
   height: 100%;
   .app-main {
     height: calc(100vh - 50px);
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
   }
 }
 

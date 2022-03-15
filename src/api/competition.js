@@ -30,13 +30,28 @@ export const getCompetitionProject = (params) => {
   return request.post('/listCompetitionProject', { ...params })
 }
 
+// 新增裁判
+export const addProjectJudge = (params) => {
+  return request.post('/createJudge', { ...params })
+}
+
+// 获取裁判列表的接口
+export const getJudgesList = (params) => {
+  return request.post('/listJudge', { ...params })
+}
+
+// 删除裁判
+export const deleteJudge = (params) => {
+  return request.post('/deleteJudge', { ...params })
+}
+
 // 新增选手
-export const addCompetitionMember = (params) => {
+export const addProjectMember = (params) => {
   return request.post('/createCompetitionMember', { ...params })
 }
 
-// 获取赛事选手列表
-export const getCompetitionMember = (params) => {
+// 获取赛事项目选手列表
+export const getProjectMember = (params) => {
   return request.post('/listCompetitionMember', { ...params })
 }
 
@@ -45,3 +60,12 @@ export const memberSign = (params) => {
   return request.post('/sign', { ...params })
 }
 
+// 删除选手
+export const deleteMember = (params) => {
+  return request.post('/deleteCompetitionMember', { ...params })
+}
+
+// 裁判打分
+export const inputScore = (params) => {
+  return request.post('/inputMemberScore', { ...params })
+}

@@ -29,7 +29,7 @@ export default {
 .battlePage {
   width: 100%;
   height: 100%;
-  background: url("../../assets/competition/bg.png") no-repeat;
+  background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   .title {
     text-align: center;
@@ -50,7 +50,7 @@ export default {
     width: 380px;
     height: 380px;
     margin: 40px auto;
-    background: url("../../assets/SUPBOOGIE-logo-07.png") no-repeat;
+    background: url("../../../assets/SUPBOOGIE-logo-07.png") no-repeat;
     background-size: 100% 100%;
   }
   .battle {
@@ -68,7 +68,7 @@ export default {
     .name {
       width: 200px;
       height: 61px;
-      background: url("../../assets/competition/user.svg") no-repeat;
+      background: url("../../../assets/competition/user.svg") no-repeat;
       background-size: 100% 100%;
       line-height: 61px;
       text-align: center;
@@ -80,7 +80,7 @@ export default {
   .logo {
     width: 280px;
     height: 90px;
-    background: url("../../assets/logo.png") no-repeat;
+    background: url("../../../assets/logo.png") no-repeat;
     background-size: 100% 100%;
     position: fixed;
     bottom: 50px;

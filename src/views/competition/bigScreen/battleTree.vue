@@ -135,7 +135,7 @@ export default {
 .battleTree {
   width: 100%;
   height: 100%;
-  background: url("../../assets/competition/bg.png") no-repeat;
+  background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   color: #fff;
   .title {
@@ -154,7 +154,7 @@ export default {
       height: 40px;
       text-align: center;
       line-height: 40px;
-      background: url("../../assets/competition/user.svg") no-repeat;
+      background: url("../../../assets/competition/user.svg") no-repeat;
       background-size: 100% 100%;
     }
     .roundOne {
@@ -171,7 +171,7 @@ export default {
       }
     }
     .line16 {
-      background: url("../../assets/competition/32-16.png") no-repeat;
+      background: url("../../../assets/competition/32-16.png") no-repeat;
       background-size: 100% 100%;
       width: 30px;
       height: 48px;
@@ -192,7 +192,7 @@ export default {
       }
     }
     .line8 {
-      background: url("../../assets/competition/16-8.png") no-repeat;
+      background: url("../../../assets/competition/16-8.png") no-repeat;
       background-size: 100% 100%;
       width: 30px;
       height: 108px;
@@ -213,7 +213,7 @@ export default {
       }
     }
     .line4 {
-      background: url("../../assets/competition/8-4.png") no-repeat;
+      background: url("../../../assets/competition/8-4.png") no-repeat;
       background-size: 100% 100%;
       width: 30px;
       height: 216px;
@@ -234,7 +234,7 @@ export default {
       }
     }
     .line2 {
-      background: url("../../assets/competition/4-2.png") no-repeat;
+      background: url("../../../assets/competition/4-2.png") no-repeat;
       background-size: 100% 100%;
       width: 30px;
       height: 432px;
@@ -246,19 +246,19 @@ export default {
     .right {
       display: flex;
       .line16-r {
-        background: url("../../assets/competition/32-16-r.png") no-repeat;
+        background: url("../../../assets/competition/32-16-r.png") no-repeat;
         background-size: 100% 100%;
       }
       .line8-r {
-        background: url("../../assets/competition/16-8-r.png") no-repeat;
+        background: url("../../../assets/competition/16-8-r.png") no-repeat;
         background-size: 100% 100%;
       }
       .line4-r {
-        background: url("../../assets/competition/8-4-r.png") no-repeat;
+        background: url("../../../assets/competition/8-4-r.png") no-repeat;
         background-size: 100% 100%;
       }
       .line2-r {
-        background: url("../../assets/competition/4-2-r.png") no-repeat;
+        background: url("../../../assets/competition/4-2-r.png") no-repeat;
         background-size: 100% 100%;
       }
     }
@@ -281,7 +281,7 @@ export default {
         height: 40px;
         text-align: center;
         line-height: 40px;
-        background: url("../../assets/competition/champion.png") no-repeat;
+        background: url("../../../assets/competition/champion.png") no-repeat;
         background-size: 100% 100%;
         margin: 30px auto 46px;
       }
@@ -290,7 +290,7 @@ export default {
         height: 40px;
         align-items: center;
         .line1 {
-          background: url("../../assets/competition/2-1.png") no-repeat;
+          background: url("../../../assets/competition/2-1.png") no-repeat;
           background-size: 100% 100%;
           width: 74px;
           height: 1px;
