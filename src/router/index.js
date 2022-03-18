@@ -96,8 +96,14 @@ export const constantRoutes = [
     meta: { title: 'champion', icon: '' }
   },
   {
-    path: '/test',
-    component: () => import('@/views/test'),
+    path: '/competition/test',
+    component: () => import('@/views/competition/test/test'),
+    name: 'test',
+    meta: { title: 'champion', icon: '' }
+  },
+  {
+    path: '/competition/controller',
+    component: () => import('@/views/competition/bigScreen/controller'),
     name: 'test',
     meta: { title: 'champion', icon: '' }
   },
