@@ -69,3 +69,18 @@ export const deleteMember = (params) => {
 export const inputScore = (params) => {
   return request.post('/inputMemberScore', { ...params })
 }
+
+// 获取对战步骤表
+export const listBattleTask = (params) => {
+  return request.post('/listBattleTask', { ...params })
+}
+
+// 获取对战成员表
+export const listBattleInfo = (params) => {
+  return request.post('/listBattleInfo', { ...params })
+}
+
+// 生成对战图
+export const generateBattleInfo = (params) => {
+  return request.post('/generateBattleInfo', { ...params })
+}

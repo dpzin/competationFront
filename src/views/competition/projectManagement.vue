@@ -4,6 +4,7 @@
       :default-active="active"
       class="el-menu-vertical-demo"
       :collapse="false"
+      @select="handleSelect"
     >
       <div
         v-for="(item,index) in projects"
@@ -15,23 +16,34 @@
             :index="index + '-1'"
             @click="handleClick(item.id, item.name)"
           >海选</el-menu-item>
-          <el-menu-item :index="index + '-2'">对战</el-menu-item>
+          <el-menu-item
+            :index="index + '-2'"
+            @click="handleClick(item.id, item.name)"
+          >对战</el-menu-item>
         </el-submenu>
       </div>
     </el-menu>
-    <audition
-      :competition-project-id="competitionProjectId"
-      :competition-project-name="competitionProjectName"
-      class="right"
-    />
+    <div class="right">
+      <audition
+        v-show="active.indexOf('-1')>-1"
+        :competition-project-id="competitionProjectId"
+        :competition-project-name="competitionProjectName"
+      />
+      <battle-steps
+        v-show="active.indexOf('-2')>-1"
+        :competition-project-id="competitionProjectId"
+        :competition-project-name="competitionProjectName"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { getCompetitionProject } from '@/api/competition'
 import audition from './components/audition.vue'
+import battleSteps from './components/battleSteps.vue'
 export default {
-  components: { audition },
+  components: { audition, battleSteps },
   data() {
     return {
       projects: [],
@@ -50,6 +62,9 @@ export default {
     }
   },
   methods: {
+    handleSelect(key) {
+      this.active = key
+    },
     handleClick(id, name) {
       this.competitionProjectId = id
       this.competitionProjectName = name

@@ -67,7 +67,7 @@
       >
         <el-table-column
           prop="no"
-          label="号牌"
+          label="号码牌"
         />
         <el-table-column
           prop="name"
@@ -126,6 +126,19 @@
       </el-table>
     </div>
     <div v-else>
+      <el-button
+        type="primary"
+        style="margin-bottom: 15px"
+        @click="enterAllScore()"
+      >
+        录入分数
+      </el-button>
+      <el-button
+        type="primary"
+        @click="getBattleTree()"
+      >
+        生成对战图
+      </el-button>
       <el-table
         key="contestantTable"
         :data="contestantList"
@@ -133,10 +146,16 @@
         fit
         highlight-current-row
         style="width: 100%;"
+        @sort-change="changeSort"
       >
         <el-table-column
+          label="序号"
+          type="index"
+          width="50"
+        />
+        <el-table-column
           prop="no"
-          label="号牌"
+          label="号码牌"
         />
         <el-table-column
           prop="name"
@@ -158,26 +177,38 @@
             v-for="judge in judgesList"
             :key="judge.id"
             :label="judge.name"
+            :prop="judge.id"
           >
             <template slot-scope="{row,$index}">
-              <el-input
+              <el-input-number
                 v-if="row[judge.id+'edit']"
+                :ref="judge.id"
                 v-model="row[judge.id]"
                 size="small"
-                @keyup.enter.native="enterScope(row, judge.id, $index)"
+                :max="100"
+                @keyup.enter.native="$event.target.blur"
                 @blur="enterScope(row, judge.id, $index)"
               />
               <span v-else>{{ row[judge.id] }}</span>
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="打分">
+        <el-table-column
+          label="总分"
+          prop="allScore"
+          sortable="custom"
+        >
           <template slot-scope="{row}">
+            <span>{{ row.allScore === 0 ? '' : row.allScore }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="打分">
+          <template slot-scope="{row, $index}">
             <el-button
               type="primary"
               size="small"
               icon="el-icon-edit"
-              @click="editScope(row)"
+              @click="editScope(row,$index)"
             >
               编辑
             </el-button>
@@ -235,7 +266,7 @@
 </template>
 
 <script>
-import { addProjectMember, getProjectMember, memberSign, deleteMember, addProjectJudge, getJudgesList, deleteJudge, inputScore } from '@/api/competition'
+import { addProjectMember, getProjectMember, memberSign, deleteMember, addProjectJudge, getJudgesList, deleteJudge, inputScore, generateBattleInfo } from '@/api/competition'
 export default {
   props: {
     competitionProjectId: {
@@ -364,7 +395,7 @@ export default {
         const message = h('p', null, [
           h('span', null, '选手'),
           h('i', { style: [{ color: 'teal' }, { fontWeight: '600' }, { margin: '0 5px' }] }, name),
-          h('span', null, '的号牌为'),
+          h('span', null, '的号码牌为'),
           h('i', {
             style: [{ color: 'teal' }, { fontWeight: '600' }, { margin: '0 5px' }]
           }, num)
@@ -403,41 +434,82 @@ export default {
     getContestantList() {
       getProjectMember({
         competitionProjectId: this.competitionProjectId,
-        status: 'signed'
+        status: 'signed',
+        role: 'common'
       }).then(res => {
         this.contestantList = res.data.map(item => {
           const obj = {
             id: item.id,
             no: item.no,
             name: item.name,
-            role: item.role
+            role: item.role,
+            allScore: 0
           }
           item.scores.map(score => {
             obj[score.competitionJudgeId] = score.scope
             obj[score.competitionJudgeId + 'edit'] = false
-            // this.$set(obj, score.competitionJudgeId + 'edit', false)
+            obj.allScore += score.scope
           })
           return obj
         })
-        console.log(this.contestantList)
       })
     },
     // 录入分数
     enterScope(row, competitionJudgeId, index) {
+      this.$nextTick(_ => {
+        this.$refs[competitionJudgeId].$refs.input.blur()
+      })
       inputScore({ competitionJudgeId, competitionMemberId: row.id, scope: row[competitionJudgeId] }).then(res => {
         this.$message({
           message: '分数录入成功！',
           type: 'success'
         })
+        row.allScore = 0
+        this.judgesList.map(item => {
+          if (row[item.id]) {
+            row.allScore += Number(row[item.id])
+          }
+        })
         row[competitionJudgeId + 'edit'] = false
-        this.$set(row, competitionJudgeId + 'edit', false)
+        this.$set(this.contestantList, index, row)
       })
     },
     // 编辑分数
-    editScope(row) {
+    editScope(row, index) {
       this.judgesList.map(item => {
         row[item.id + 'edit'] = true
       })
+      this.$set(this.contestantList, index, row)
+    },
+    // 录入分数（全部可编辑）
+    enterAllScore() {
+      this.contestantList.map((item, index) => {
+        this.judgesList.map(obj => {
+          item[obj.id + 'edit'] = true
+        })
+        this.$set(this.contestantList, index, item)
+      })
+    },
+    // 生成对战表
+    getBattleTree() {
+      generateBattleInfo({ competitionProjectId: this.competitionProjectId }).then(res => {
+        if (res.errorMessage) {
+          this.$message({
+            message: res.errorMessage,
+            type: 'error'
+          })
+        }
+      })
+    },
+    // 表格排序
+    changeSort(column) {
+      if (!column.prop || !column.order || !this.contestantList || !this.contestantList.length) return this.contestantList
+      var reverse = column.order === 'descending' ? -1 : 1
+      if (column.prop === 'allScore') {
+        return this.contestantList.sort((a, b) => {
+          return reverse * (a['allScore'] - b['allScore'])
+        })
+      }
     }
   }
 }
