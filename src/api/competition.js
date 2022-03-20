@@ -84,3 +84,13 @@ export const listBattleInfo = (params) => {
 export const generateBattleInfo = (params) => {
   return request.post('/generateBattleInfo', { ...params })
 }
+
+// 获取大屏对战图
+export const listBigScreenBattleInfo = (params) => {
+  return request.post('/listBigScreenBattleInfo', { ...params })
+}
+
+// 获取battle信息
+export const getBattleInfo = (params) => {
+  return request.post('/getBattleInfo', { ...params })
+}
