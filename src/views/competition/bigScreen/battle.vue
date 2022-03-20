@@ -2,24 +2,49 @@
   <div class="battlePage">
     <div class="title">大赛</div>
     <div class="type">
-      <span style="margin-right: 20px;">POPPING</span>
-      <span>16-8</span>
+      <span style="margin-right: 20px;">{{ battleInfo.projectName }}</span>
+      <span>{{ battleInfo.taskName }}</span>
     </div>
     <div class="main" />
     <div class="battle">
-      <div class="name">三哥</div>
+      <div class="name">{{ battleInfo.leftMember.name }}</div>
       <div class="vs">VS</div>
-      <div class="name">唐神</div>
+      <div class="name">{{ battleInfo.rightMember.name }}</div>
     </div>
     <div class="logo" />
   </div>
 </template>
 
 <script>
+import { getBattleInfo } from '@/api/competition'
+
 export default {
+  props: {
+    battleId: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-
+      battleInfo: {
+        leftMember: {},
+        rightMember: {},
+        taskName: '',
+        projectName: ''
+      }
+    }
+  },
+  watch: {
+    battleId() {
+      this.getBattle()
+    }
+  },
+  methods: {
+    getBattle() {
+      getBattleInfo({ id: this.battleId }).then(res => {
+        console.log(res.data)
+      })
     }
   }
 }

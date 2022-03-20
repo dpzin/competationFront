@@ -94,3 +94,13 @@ export const updateAudition2Result = (params) => {
 export const judgeWinner = (params) => {
   return request.post('/judgeWinner', { ...params })
 }
+
+// 获取大屏battleTree
+export const listBigScreenBattleInfo = (params) => {
+  return request.post('/listBigScreenBattleInfo', { ...params })
+}
+
+// 获取大屏battle1v1
+export const getBattleInfo = (params) => {
+  return request.post('/getBattleInfo', { ...params })
+}
