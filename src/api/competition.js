@@ -84,3 +84,13 @@ export const listBattleInfo = (params) => {
 export const generateBattleInfo = (params) => {
   return request.post('/generateBattleInfo', { ...params })
 }
+
+// 二海选手
+export const updateAudition2Result = (params) => {
+  return request.post('/updateAudition2Result', { ...params })
+}
+
+// 判决
+export const judgeWinner = (params) => {
+  return request.post('/judgeWinner', { ...params })
+}

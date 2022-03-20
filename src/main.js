@@ -36,6 +36,8 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+Vue.prototype.$EventBus = new Vue()
+
 new Vue({
   el: '#app',
   router,

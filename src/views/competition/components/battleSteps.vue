@@ -6,12 +6,13 @@
     >
       <el-step
         v-for="item in stepsList"
-        :key="item.id"
+        :key="item.step"
         :title="item.title"
-        @click.native="next(item.id)"
+        @click.native="next(item.step - 1,item.id)"
       />
     </el-steps>
     <el-table
+      v-loading="loading"
       :data="list"
       border
       fit
@@ -29,27 +30,18 @@
       <el-table-column
         prop="leftMemberId"
         label="左边选手"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.leftMember.name }}</span>
-        </template>
-      </el-table-column>
+        :formatter="formatterIdToName"
+      />
       <el-table-column
         prop="rightMemberId"
         label="右边选手"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.rightMember.name }}</span>
-        </template>
-      </el-table-column>
+        :formatter="formatterIdToName"
+      />
       <el-table-column
         prop="win"
         label="获胜"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.winMember.name }}</span>
-        </template>
-      </el-table-column>
+        :formatter="formatterIdToName"
+      />
       <el-table-column label="操作">
         <template slot-scope="{row}">
           <el-button
@@ -69,59 +61,40 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-dialog
-      title="录入选手"
-      :visible.sync="addPlayerDialog"
-      width="600px"
+    <el-dialog
+      title="判决"
+      :visible.sync="judgeDialog"
+      width="500px"
     >
-      <el-form
-        ref="form"
-        :model="form"
-        :rules="rules"
-      >
-        <el-form-item
-          label="姓名"
-          prop="name"
-          label-width="100px"
-        >
-          <el-input
-            v-model="form.name"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <el-form-item
-          label="角色"
-          prop="role"
-          label-width="100px"
-        >
-          <el-radio
-            v-model="form.role"
-            label="common"
-          >common</el-radio>
-          <el-radio
-            v-model="form.role"
-            label="guest"
-          >guest</el-radio>
-        </el-form-item>
-      </el-form>
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="resetForm()">取 消</el-button>
+      <el-radio
+        v-model="winner"
+        :label="judgeObj.leftMemberId"
+        border
+      >{{ judgeObj.leftMemberName }}</el-radio>
+      <el-radio
+        v-model="winner"
+        :label="judgeObj.rightMemberId"
+        border
+      >{{ judgeObj.rightMemberName }}</el-radio>
+      <div slot="footer">
+        <el-button @click="judgeDialog = false; winner = ''">取 消</el-button>
         <el-button
           type="primary"
-          @click="addPlayer()"
+          @click="judgeOk()"
         >确 定</el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listBattleTask, listBattleInfo } from '@/api/competition'
+import { listBattleTask, listBattleInfo, judgeWinner } from '@/api/competition'
 export default {
   props: {
+    active: {
+      type: String,
+      required: true
+    },
     competitionProjectId: {
       type: String,
       required: true
@@ -135,35 +108,77 @@ export default {
     return {
       stepActive: 0,
       stepsList: [],
-      list: []
+      taskId: '',
+      list: [],
+      loading: false,
+      judgeDialog: false,
+      winner: '',
+      judgeObj: {} // 当前选择判决的对象
     }
   },
   watch: {
-    competitionProjectId() {
-      this.getBattleSteps()
+    active() {
+      if (this.active.indexOf('-2') > -1) {
+        this.getBattleSteps()
+      }
     }
   },
   methods: {
     // 获取项目对应的对战步骤表
-    getBattleSteps() {
-      listBattleTask({ competitionProjectId: this.competitionProjectId }).then(res => {
+    async getBattleSteps() {
+      await listBattleTask({ competitionProjectId: this.competitionProjectId }).then(res => {
         this.stepsList = res.data
-        this.next(res.data[0].id)
+        this.stepActive = res.data[0].step - 1
+        this.taskId = res.data[0].id
+        this.next(res.data[0].step - 1, res.data[0].id)
       })
     },
     // 获取表格数据
-    next(taskId) {
-      listBattleInfo({ taskId, competitionProjectId: this.competitionProjectId }).then(res => {
-        this.list = res.data
+    async next(step, taskId) {
+      this.stepActive = step
+      this.taskId = taskId
+      this.loading = true
+      await listBattleInfo({ taskId, competitionProjectId: this.competitionProjectId }).then(res => {
+        this.list = res.data.map(item => {
+          return { ...item, leftMemberName: item?.leftMember?.name, rightMemberName: item?.rightMember?.name, winMemberName: item?.winMember?.name }
+        })
+        this.loading = false
       })
+    },
+    // 根据id获取name
+    formatterIdToName(row, column) {
+      let member
+      switch (column.property) {
+        case 'leftMemberId':
+          member = 'leftMemberName'
+          break
+        case 'rightMemberId':
+          member = 'rightMemberName'
+          break
+        case 'win':
+          member = 'winMemberName'
+          break
+        default:
+          break
+      }
+      return row[member]
     },
     // 大屏显示
     bigScreen() {
 
     },
     // 判决
-    judge() {
-
+    judge(row) {
+      this.judgeDialog = true
+      this.judgeObj = row
+    },
+    judgeOk() {
+      if (this.winner) {
+        judgeWinner({ battleId: this.judgeObj.id, winnerId: this.winner }).then(res => {
+          this.judgeDialog = false
+          this.next(this.stepActive, this.taskId)
+        })
+      }
     }
   }
 }
