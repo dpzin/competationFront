@@ -94,3 +94,8 @@ export const listBigScreenBattleInfo = (params) => {
 export const getBattleInfo = (params) => {
   return request.post('/getBattleInfo', { ...params })
 }
+
+// 获取海选名单
+export const listSeaSelection = (params) => {
+  return request.post('/listSeaSelection', { ...params })
+}
