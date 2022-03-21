@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div v-if="competition.main">主页海报</div>
-    <div v-if="competition.battleInfo">晋级表</div>
-    <div v-if="competition.battle1v1">1V1 Battle</div>
-    <div v-if="competition.chaimpion">冠军</div>
+    <competitors v-if="competition.competitors" />
+    <battle v-if="competition.battle1v1" />
+    <champion v-if="competition.champion" />
+    <battle-tree v-if="competition.battleInfo" />
   </div>
 </template>
 
@@ -11,14 +11,19 @@
 var websock = null
 var serverPort = '16666'
 var id = 11
+import competitors from './bigScreen/competitors.vue'
+import battle from './bigScreen/battle.vue'
+import champion from './bigScreen/champion.vue'
+import battleTree from './bigScreen/battleTree.vue'
 export default {
+  components: { competitors, battle, champion, battleTree },
   data() {
     return {
       competition: {
-        main: true,
+        competitors: true,
         battleInfo: false,
         battle1v1: false,
-        chaimpion: false
+        champion: false
       }
     }
   },
@@ -32,17 +37,17 @@ export default {
       // ws地址
       var wsuri = 'ws://' + this.getWebIP() + ':' + serverPort + '/webSocket/' + id
       websock = new WebSocket(wsuri)
-      websock.onmessage = function(e) {
+      websock.onmessage = (e) => {
         ref.websocketonmessage(e)
       }
-      websock.onclose = function(e) {
+      websock.onclose = (e) => {
         ref.websocketclose(e)
       }
-      websock.onopen = function() {
+      websock.onopen = () => {
         ref.websocketOpen()
       }
       // 连接发生错误的回调方法
-      websock.onerror = function() {
+      websock.onerror = () => {
         console.log('WebSocket连接发生错误')
       }
     },
@@ -50,15 +55,15 @@ export default {
       console.log('接受到的消息:' + e.data)
       const socketMessage = JSON.parse(e.data)
       if (socketMessage.view === 'battleInfo') {
-        this.clearChaimpion()
+        this.clearChampion()
         this.competition.battleInfo = true
       }
     },
-    clearChaimpion() {
-      this.competition.main = false
+    clearChampion() {
+      this.competition.competitors = false
       this.competition.battleInfo = false
       this.competition.battle1v1 = false
-      this.competition.chaimpion = false
+      this.competition.champion = false
     },
     websocketsend(agentData) {
       websock.send(JSON.stringify(agentData))
@@ -76,11 +81,11 @@ export default {
       if (websock.readyState === websock.OPEN) {
         this.websocketsend(agentData)
       } else if (websock.readyState === websock.CONNECTING) {
-        setTimeout(function() {
+        setTimeout(() => {
           ref.sendSock(agentData, callback)
         }, 1000)
       } else {
-        setTimeout(function() {
+        setTimeout(() => {
           ref.sendSock(agentData, callback)
         }, 1000)
       }

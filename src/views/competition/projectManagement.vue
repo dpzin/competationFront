@@ -14,11 +14,11 @@
           <template slot="title">{{ item.name }}</template>
           <el-menu-item
             :index="index + '-1'"
-            @click="handleClick(item.id, item.name)"
+            @click="handleClick(item.id, item.name, item.processStatus)"
           >海选</el-menu-item>
           <el-menu-item
             :index="index + '-2'"
-            @click="handleClick(item.id, item.name)"
+            @click="handleClick(item.id, item.name, item.processStatus)"
           >对战</el-menu-item>
         </el-submenu>
       </div>
@@ -28,9 +28,11 @@
         v-show="active.indexOf('-1')>-1"
         :competition-project-id="competitionProjectId"
         :competition-project-name="competitionProjectName"
+        :process-status="processStatus"
       />
       <battle-steps
         v-show="active.indexOf('-2')>-1"
+        :active="active"
         :competition-project-id="competitionProjectId"
         :competition-project-name="competitionProjectName"
       />
@@ -49,7 +51,8 @@ export default {
       projects: [],
       active: '0-1',
       competitionProjectId: '',
-      competitionProjectName: ''
+      competitionProjectName: '',
+      processStatus: ''
     }
   },
   created() {
@@ -58,6 +61,7 @@ export default {
         this.projects = res.data
         this.competitionProjectId = res.data[0].id
         this.competitionProjectName = res.data[0].name
+        this.processStatus = res.data[0].processStatus
       })
     }
   },
@@ -65,9 +69,10 @@ export default {
     handleSelect(key) {
       this.active = key
     },
-    handleClick(id, name) {
+    handleClick(id, name, processStatus) {
       this.competitionProjectId = id
       this.competitionProjectName = name
+      this.processStatus = processStatus
     }
   }
 }
@@ -94,6 +99,10 @@ export default {
     flex: 4;
     height: 100%;
     padding: 30px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 </style>

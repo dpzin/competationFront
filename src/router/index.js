@@ -81,13 +81,13 @@ export const constantRoutes = [
     path: '/competition/battleTree',
     component: () => import('@/views/competition/bigScreen/battleTree'),
     name: '对战图',
-    meta: { title: 'battle', icon: 'tree-table' }
+    meta: { title: 'battleTree', icon: 'tree-table' }
   },
   {
-    path: '/competition/1v1battle',
-    component: () => import('@/views/competition/bigScreen/1v1battle'),
-    name: '1v1battle',
-    meta: { title: '1v1battle', icon: '' }
+    path: '/competition/battle',
+    component: () => import('@/views/competition/bigScreen/battle'),
+    name: 'battle',
+    meta: { title: 'battle', icon: '' }
   },
   {
     path: '/competition/champion',
@@ -96,10 +96,10 @@ export const constantRoutes = [
     meta: { title: 'champion', icon: '' }
   },
   {
-    path: '/competition/test',
-    component: () => import('@/views/competition/test/test'),
-    name: 'test',
-    meta: { title: 'champion', icon: '' }
+    path: '/competition/bigScreen',
+    component: () => import('@/views/competition/bigScreen'),
+    name: 'bigScreen',
+    meta: { title: 'bigScreen', icon: '' }
   },
   {
     path: '/competition/controller',

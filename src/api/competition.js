@@ -85,12 +85,22 @@ export const generateBattleInfo = (params) => {
   return request.post('/generateBattleInfo', { ...params })
 }
 
-// 获取大屏对战图
+// 二海选手
+export const updateAudition2Result = (params) => {
+  return request.post('/updateAudition2Result', { ...params })
+}
+
+// 判决
+export const judgeWinner = (params) => {
+  return request.post('/judgeWinner', { ...params })
+}
+
+// 获取大屏battleTree
 export const listBigScreenBattleInfo = (params) => {
   return request.post('/listBigScreenBattleInfo', { ...params })
 }
 
-// 获取battle信息
+// 获取大屏battle1v1
 export const getBattleInfo = (params) => {
   return request.post('/getBattleInfo', { ...params })
 }

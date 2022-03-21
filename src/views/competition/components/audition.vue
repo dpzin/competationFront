@@ -44,12 +44,14 @@
       />
       <el-button
         v-else
+        v-show="!finishFlag"
         class="button-new-tag"
         @click="showInput"
       >+ 添加裁判</el-button>
     </div>
     <div v-else-if="stepActive === 1">
       <el-button
+        v-show="!finishFlag"
         type="primary"
         icon="el-icon-create"
         style="margin-bottom: 20px;"
@@ -59,6 +61,7 @@
       </el-button>
       <el-table
         key="playerTable"
+        v-loading="playerLoading"
         :data="playerList"
         border
         fit
@@ -102,7 +105,10 @@
             >已签到</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column
+          v-if="!finishFlag"
+          label="操作"
+        >
           <template slot-scope="{row}">
             <div v-if="row.status === 'unSigned'">
               <el-button
@@ -127,6 +133,7 @@
     </div>
     <div v-else>
       <el-button
+        v-show="!finishFlag"
         type="primary"
         style="margin-bottom: 15px"
         @click="enterAllScore()"
@@ -134,6 +141,7 @@
         录入分数
       </el-button>
       <el-button
+        v-show="!finishFlag"
         type="primary"
         @click="getBattleTree()"
       >
@@ -141,6 +149,7 @@
       </el-button>
       <el-table
         key="contestantTable"
+        v-loading="contestantLoading"
         :data="contestantList"
         border
         fit
@@ -202,7 +211,10 @@
             <span>{{ row.allScore === 0 ? '' : row.allScore }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="打分">
+        <el-table-column
+          v-if="!finishFlag"
+          label="打分"
+        >
           <template slot-scope="{row, $index}">
             <el-button
               type="primary"
@@ -262,11 +274,47 @@
         >确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      :visible.sync="secondChoose"
+      width="600px"
+    >
+      <div slot="title">
+        <div>{{ secondChooseInfo.errorMessage }}</div>
+        <div class="tip">（需要选择 <i> {{ secondChooseInfo.selectNum }} </i>名选手过海）</div>
+      </div>
+      <div>需要二海的选手如下：</div>
+      <el-form
+        ref="secondChooseFrom"
+        :model="secondForm"
+        :rules="secondRules"
+      >
+        <el-form-item prop="player">
+          <el-checkbox-group v-model="secondForm.player">
+            <el-checkbox
+              v-for="item in secondChooseInfo.member"
+              :key="item.id"
+              :label="item.id"
+            >{{ item.name }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="resetSecondChooseForm()">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="secondChoosePlayer()"
+        >确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { addProjectMember, getProjectMember, memberSign, deleteMember, addProjectJudge, getJudgesList, deleteJudge, inputScore, generateBattleInfo } from '@/api/competition'
+import { addProjectMember, getProjectMember, memberSign, deleteMember, addProjectJudge, getJudgesList, deleteJudge, inputScore, generateBattleInfo, updateAudition2Result } from '@/api/competition'
 export default {
   props: {
     competitionProjectId: {
@@ -276,15 +324,27 @@ export default {
     competitionProjectName: {
       type: String,
       required: true
+    },
+    processStatus: {
+      type: String,
+      required: true
     }
   },
   data() {
+    const validateSecondPlayer = (rule, value, callback) => {
+      if (value.length !== this.secondChooseInfo.selectNum) {
+        callback(new Error(`请选择${this.secondChooseInfo.selectNum}名选手!`))
+      } else {
+        callback()
+      }
+    }
     return {
       stepActive: 0,
       judgesList: [], // 裁判列表
       inputVisible: false,
       inputValue: '',
       playerList: [], // 选手列表
+      playerLoading: false,
       addPlayerDialog: false,
       form: {
         name: '',
@@ -295,13 +355,28 @@ export default {
         role: [{ required: true, message: '角色不能为空！', trigger: 'blur' }]
       },
       filters: [{ value: 'signed', text: '已签到' }, { value: 'unSigned', text: '未签到' }],
-      contestantList: [] // 海选选手列表（已经签到的）
+      contestantList: [], // 海选选手列表（已经签到的）
+      contestantLoading: false,
+      secondChoose: false, // 二海选择
+      secondChooseInfo: {}, // 二海信息
+      secondForm: {
+        player: []
+      },
+      secondRules: {
+        player: [
+          { type: 'array', required: true, validator: validateSecondPlayer, trigger: 'change' }
+        ]
+      },
+      finishFlag: this.processStatus !== '0' // 海选是否完成 processStatus 0 未完成
     }
   },
   watch: {
     competitionProjectId() {
       this.getJudgeList()
       this.stepActive = 0
+    },
+    processStatus() {
+      this.finishFlag = this.processStatus !== '0'
     }
   },
   methods: {
@@ -378,10 +453,12 @@ export default {
       })
     },
     // 获取参赛选手列表
-    getPlayerList() {
-      getProjectMember({
+    async getPlayerList() {
+      this.playerLoading = true
+      await getProjectMember({
         competitionProjectId: this.competitionProjectId
       }).then(res => {
+        this.playerLoading = false
         this.playerList = res.data
       })
     },
@@ -431,8 +508,9 @@ export default {
       return row[property] === value
     },
     // 海选选手列表处理
-    getContestantList() {
-      getProjectMember({
+    async getContestantList() {
+      this.contestantLoading = true
+      await getProjectMember({
         competitionProjectId: this.competitionProjectId,
         status: 'signed',
         role: 'common'
@@ -452,6 +530,7 @@ export default {
           })
           return obj
         })
+        this.contestantLoading = false
       })
     },
     // 录入分数
@@ -490,17 +569,6 @@ export default {
         this.$set(this.contestantList, index, item)
       })
     },
-    // 生成对战表
-    getBattleTree() {
-      generateBattleInfo({ competitionProjectId: this.competitionProjectId }).then(res => {
-        if (res.errorMessage) {
-          this.$message({
-            message: res.errorMessage,
-            type: 'error'
-          })
-        }
-      })
-    },
     // 表格排序
     changeSort(column) {
       if (!column.prop || !column.order || !this.contestantList || !this.contestantList.length) return this.contestantList
@@ -510,6 +578,42 @@ export default {
           return reverse * (a['allScore'] - b['allScore'])
         })
       }
+    },
+    // 生成对战表
+    getBattleTree() {
+      generateBattleInfo({ competitionProjectId: this.competitionProjectId }).then(res => {
+        if (res.errorCode) {
+          this.secondChoose = true
+          this.secondChooseInfo = res.data
+          this.secondChooseInfo.errorMessage = res.errorMessage
+        } else {
+          this.$message({
+            message: '操作成功！',
+            type: 'success'
+          })
+          this.finishFlag = true
+        }
+      })
+    },
+    // 重置二海选择表单
+    resetSecondChooseForm() {
+      this.secondForm = {
+        player: []
+      }
+      this.$refs['secondChooseFrom'].resetFields()
+      this.secondChoose = false
+    },
+    // 二海选手
+    secondChoosePlayer() {
+      this.$refs['secondChooseFrom'].validate((valid) => {
+        if (valid) {
+          console.log(this.secondForm.player)
+          updateAudition2Result({ ids: this.secondForm.player }).then(res => {
+            this.resetSecondChooseForm()
+            this.getBattleTree()
+          })
+        }
+      })
     }
   }
 }
@@ -569,5 +673,12 @@ export default {
 }
 .el-step__line {
   background-color: #999;
+}
+
+.tip {
+  font-size: 12px;
+  font-weight: 500;
+  color: red;
+  margin-top: 5px;
 }
 </style>
