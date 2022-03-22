@@ -1,12 +1,30 @@
 <template>
   <div class="bigScreen">
-    <competitors v-if="type === 'competitors'" />
+    <div
+      v-if="type === 'main'"
+      class="main"
+      :style="{'background-image': 'url('+ domain + coverUrl + ')'}"
+    />
+    <competitors
+      v-if="type === 'competitors'"
+      :competition-name="competitionName"
+      :competition-project-id="competitionProjectId"
+    />
     <battle
       v-if="type === 'battle1v1'"
       :battle-id="battleId"
+      :competition-name="competitionName"
     />
-    <champion v-if="type === 'champion'" />
-    <battle-tree v-if="type === 'battleInfo'" />
+    <champion
+      v-if="type === 'champion'"
+      :competition-project-id="competitionProjectId"
+      :competition-name="competitionName"
+    />
+    <battle-tree
+      v-if="type === 'battleInfo'"
+      :competition-name="competitionName"
+      :competition-project-id="competitionProjectId"
+    />
   </div>
 </template>
 
@@ -16,17 +34,29 @@ import competitors from './bigScreen/competitors.vue'
 import battle from './bigScreen/battle.vue'
 import champion from './bigScreen/champion.vue'
 import battleTree from './bigScreen/battleTree.vue'
+import { getCompetitionDetail } from '@/api/competition'
 export default {
   components: { competitors, battle, champion, battleTree },
   data() {
     return {
-      type: '',
+      type: 'main',
       id: this.$route.query.competitionId,
-      battleId: ''
+      domain: process.env.VUE_APP_BASE_API,
+      coverUrl: '',
+      competitionName: '',
+      battleId: '',
+      competitionProjectId: ''
     }
   },
-  created() {
+  async created() {
     this.initWebSocket()
+    if (this.$route.query.competitionId) {
+      // 获取赛事大屏背景
+      await getCompetitionDetail({ id: this.$route.query.competitionId }).then(res => {
+        this.coverUrl = res.data.coverUrl
+        this.competitionName = res.data.name
+      })
+    }
   },
   methods: {
     // 上传文件格式限制
@@ -56,6 +86,7 @@ export default {
       if (socketMessage) {
         this.type = socketMessage.type
         this.battleId = socketMessage.battleId
+        this.competitionProjectId = socketMessage.competitionProjectId
       }
     },
     websocketsend(agentData) {
@@ -87,5 +118,11 @@ export default {
 .bigScreen {
   width: 100%;
   height: 100%;
+  .main {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
 }
 </style>

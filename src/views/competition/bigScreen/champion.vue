@@ -1,6 +1,6 @@
 <template>
   <div class="championPage">
-    <div class="title">大赛</div>
+    <div class="title">{{ competitionName }}</div>
     <div class="type">
       <span style="margin-right: 20px;">{{ competitionProjectName }}</span>
     </div>
@@ -14,9 +14,18 @@
 import { getCompetitionProject, getChampionByProjectId } from '@/api/competition'
 
 export default {
+  props: {
+    competitionProjectId: {
+      type: String,
+      required: true
+    },
+    competitionName: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      competitionProjectId: '2c9abe3f7f8c04c1017f8df0b0740001',
       competitionProjectName: '',
       championName: ''
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="battleTree">
-    <div class="title">大赛</div>
+    <div class="title">{{ competitionName }}</div>
     <div class="main">
       <div class="left">
         <div class="roundOne">
@@ -55,7 +55,7 @@
         <div class="line2" />
       </div>
       <div class="center">
-        <div class="type">POPPING</div>
+        <div class="type">{{ competitionProjectName }}</div>
         <div class="winner">WINNER</div>
         <div class="champion">冠军</div>
         <div class="roundFive">
@@ -120,38 +120,41 @@
   </div>
 </template>
 <script>
-import { listBigScreenBattleInfo } from '@/api/competition'
-
+import { listBigScreenBattleInfo, getCompetitionProject } from '@/api/competition'
 export default {
   props: {
     competitionProjectId: {
+      type: String,
+      required: true
+    },
+    competitionName: {
       type: String,
       required: true
     }
   },
   data() {
     return {
-      user: {
-        left: { roundOne: [{ name: '一' }, { name: '二' }, { name: '三' }, { name: '四' }, { name: '五' }, { name: '六' }, { name: '七' }, { name: '八' }, { name: '九' }, { name: '十' }, { name: '十一' }, { name: '十二' }, { name: '十三' }, { name: '十四' }, { name: '十五' }, { name: '十六' }], roundTwo: [{ name: '2-1' }, { name: '2-2' }, { name: '2-3' }, { name: '2-4' }, { name: '2-5' }, { name: '2-6' }, { name: '2-7' }, { name: '2-8' }], roundThree: [{ name: '3-1' }, { name: '3-2' }, { name: '3-3' }, { name: '3-4' }], roundFour: [{ name: '4-1' }, { name: '4-2' }], roundFive: [{ name: '5-1' }] }, right: { roundOne: [{ name: '一' }, { name: '二' }, { name: '三' }, { name: '四' }, { name: '五' }, { name: '六' }, { name: '七' }, { name: '八' }, { name: '九' }, { name: '十' }, { name: '十一' }, { name: '十二' }, { name: '十三' }, { name: '十四' }, { name: '十五' }, { name: '十六' }], roundTwo: [{ name: '2-1' }, { name: '2-2' }, { name: '2-3' }, { name: '2-4' }, { name: '2-5' }, { name: '2-6' }, { name: '2-7' }, { name: '2-8' }], roundThree: [{ name: '3-1' }, { name: '3-2' }, { name: '3-3' }, { name: '3-4' }], roundFour: [{ name: '4-1' }, { name: '4-2' }], roundFive: [{ name: '5-1' }] }, champion: '冠军'
-      }
+      user: {},
+      competitionProjectName: ''
     }
   },
   watch: {
     competitionProjectId() {
-      this.getBigScreemInfo(this.competitionProjectId)
+      this.getBigScreenInfo(this.competitionProjectId)
     }
   },
   created() {
-    this.getBigScreemInfo(this.competitionProjectId)
+    this.getBigScreenInfo(this.competitionProjectId)
   },
   methods: {
-    getBigScreemInfo() {
+    getBigScreenInfo() {
       var ref = this
       listBigScreenBattleInfo({ competitionProjectId: this.competitionProjectId }).then(res => {
         ref.user = res.data
-        console.log(ref.user)
       })
-      console.log(ref.user)
+      getCompetitionProject({ ids: [this.competitionProjectId] }).then(res => {
+        this.competitionProjectName = res.data[0].name
+      })
     }
   }
 }

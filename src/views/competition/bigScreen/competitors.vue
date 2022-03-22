@@ -1,7 +1,7 @@
 <template>
   <div class="competitors">
-    <div class="title">大赛</div>
-    <div class="smallTitle">POPPING 过海选手</div>
+    <div class="title">{{ competitionName }}</div>
+    <div class="smallTitle">{{ competitionProjectName }} 过海选手</div>
     <div class="main">
       <div
         v-for="item in list"
@@ -20,13 +20,22 @@
 </template>
 
 <script>
-import { listSeaSelection } from '@/api/competition'
-
+import { listSeaSelection, getCompetitionProject } from '@/api/competition'
 export default {
+  props: {
+    competitionProjectId: {
+      type: String,
+      required: true
+    },
+    competitionName: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       list: [],
-      competitionProjectId: '2c9abe3f7f8c04c1017f8df0b0740001'
+      competitionProjectName: ''
     }
   },
   created() {
@@ -37,6 +46,9 @@ export default {
       listSeaSelection({ competitionProjectId: this.competitionProjectId }).then(res => {
         this.list = res.data
         console.log(res.data)
+      })
+      getCompetitionProject({ ids: [this.competitionProjectId] }).then(res => {
+        this.competitionProjectName = res.data[0].name
       })
     }
   }
@@ -51,6 +63,8 @@ export default {
   background-size: 100% 100%;
   padding-top: 35px;
   .title {
+    height: 42px;
+    line-height: 42px;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
@@ -68,10 +82,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    &:after {
-      content: "";
-      width: 180px;
-    }
+    // &:after {
+    //   content: "";
+    //   width: 180px;
+    // }
     .user {
       text-align: center;
       margin-bottom: 30px;

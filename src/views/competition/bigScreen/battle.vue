@@ -1,6 +1,6 @@
 <template>
   <div class="battlePage">
-    <div class="title">大赛</div>
+    <div class="title">{{ competitionName }}</div>
     <div class="type">
       <span style="margin-right: 20px;">{{ battleInfo.projectName }}</span>
       <span>{{ battleInfo.taskName }}</span>
@@ -21,6 +21,10 @@ import { getBattleInfo } from '@/api/competition'
 export default {
   props: {
     battleId: {
+      type: String,
+      required: true
+    },
+    competitionName: {
       type: String,
       required: true
     }

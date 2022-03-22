@@ -18,6 +18,7 @@
                 :src="domain + coverUrl"
                 width="167"
                 height="94"
+                @click="toBigScreen('main')"
               >
               <div class="box-title">主画面</div>
             </div>
@@ -26,6 +27,7 @@
                 :src="domain + coverUrl"
                 width="167"
                 height="94"
+                @click="toBigScreen('competitors',item.processStatus)"
               >
               <div class="box-title">海选名单</div>
             </div>
@@ -34,14 +36,16 @@
                 :src="domain + coverUrl"
                 width="167"
                 height="94"
+                @click="toBigScreen('battleInfo', item.processStatus)"
               >
-              <div class="box-title">对站图</div>
+              <div class="box-title">对战图</div>
             </div>
             <div class="box">
               <img
                 :src="domain + coverUrl"
                 width="167"
                 height="94"
+                @click="toBigScreen('champion', item.processStatus)"
               >
               <div class="box-title">冠军</div>
             </div>
@@ -210,6 +214,25 @@ export default {
         judgeWinner({ battleId: this.battleOptions.id, winnerId: this.winner }).then(res => {
           this.dialogVisible = false
         })
+      }
+    },
+    toBigScreen(type, processStatus) {
+      if (processStatus === '0') {
+        this.$message({
+          message: '海选尚未完成，不可操作！',
+          type: 'error'
+        })
+      } else if (type === 'champion' && processStatus !== '2') {
+        this.$message({
+          message: '冠军尚未产生，不可操作！',
+          type: 'error'
+        })
+      } else {
+        const params = {
+          competitionId: this.competitionId,
+          message: JSON.stringify({ type, competitionProjectId: processStatus ? this.active : '' })
+        }
+        sendWebSocketMessage({ ...params }).then()
       }
     }
   }
