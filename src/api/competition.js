@@ -104,3 +104,8 @@ export const listBigScreenBattleInfo = (params) => {
 export const getBattleInfo = (params) => {
   return request.post('/getBattleInfo', { ...params })
 }
+
+// 发送大屏信息
+export const sendWebSocketMessage = (params) => {
+  return request.post('/sendWebSocketMessage', { ...params })
+}

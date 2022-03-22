@@ -71,41 +71,46 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/competition/competitors',
-    component: () => import('@/views/competition/bigScreen/competitors'),
-    name: '参赛选手',
-    meta: { title: '参赛选手', icon: 'el-icon-user' }
-  },
-  {
-    path: '/competition/battleTree',
-    component: () => import('@/views/competition/bigScreen/battleTree'),
-    name: '对战图',
-    meta: { title: 'battleTree', icon: 'tree-table' }
-  },
-  {
-    path: '/competition/battle',
-    component: () => import('@/views/competition/bigScreen/battle'),
-    name: 'battle',
-    meta: { title: 'battle', icon: '' }
-  },
-  {
-    path: '/competition/champion',
-    component: () => import('@/views/competition/bigScreen/champion'),
-    name: 'champion',
-    meta: { title: 'champion', icon: '' }
-  },
+  // {
+  //   path: '/competition/competitors',
+  //   component: () => import('@/views/competition/bigScreen/competitors'),
+  //   name: '参赛选手',
+  //   meta: { title: '参赛选手', icon: 'el-icon-user' },
+  //   hidden: true
+  // },
+  // {
+  //   path: '/competition/battleTree',
+  //   component: () => import('@/views/competition/bigScreen/battleTree'),
+  //   name: '对战图',
+  //   meta: { title: 'battleTree', icon: 'tree-table' },
+  //   hidden: true
+  // },
+  // {
+  //   path: '/competition/battle',
+  //   component: () => import('@/views/competition/bigScreen/battle'),
+  //   name: 'battle',
+  //   meta: { title: 'battle', icon: '' },
+  //   hidden: true
+  // },
+  // {
+  //   path: '/competition/champion',
+  //   component: () => import('@/views/competition/bigScreen/champion'),
+  //   name: 'champion',
+  //   meta: { title: 'champion', icon: '' },
+  //   hidden: true
+  // },
   {
     path: '/competition/bigScreen',
     component: () => import('@/views/competition/bigScreen'),
     name: 'bigScreen',
-    meta: { title: 'bigScreen', icon: '' }
+    meta: { title: 'bigScreen', icon: '' },
+    hidden: true
   },
   {
     path: '/competition/controller',
-    component: () => import('@/views/competition/bigScreen/controller'),
+    component: () => import('@/views/competition/controller'),
     name: 'test',
-    meta: { title: 'champion', icon: '' }
+    meta: { title: 'MC', icon: 'el-icon-s-check' }
   },
   {
     path: '/404',

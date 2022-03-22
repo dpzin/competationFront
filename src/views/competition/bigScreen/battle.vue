@@ -40,10 +40,13 @@ export default {
       this.getBattle()
     }
   },
+  created() {
+    this.getBattle()
+  },
   methods: {
     getBattle() {
       getBattleInfo({ id: this.battleId }).then(res => {
-        console.log(res.data)
+        this.battleInfo = res.data
       })
     }
   }

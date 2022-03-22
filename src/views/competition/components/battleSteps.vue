@@ -47,7 +47,7 @@
           <el-button
             type="primary"
             size="small"
-            @click="bigScreen(row)"
+            @click="bigScreen(row.id)"
           >
             大屏显示
           </el-button>
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { listBattleTask, listBattleInfo, judgeWinner } from '@/api/competition'
+import { listBattleTask, listBattleInfo, judgeWinner, sendWebSocketMessage } from '@/api/competition'
 export default {
   props: {
     active: {
@@ -100,6 +100,10 @@ export default {
       required: true
     },
     competitionProjectName: {
+      type: String,
+      required: true
+    },
+    competitionId: {
       type: String,
       required: true
     }
@@ -164,8 +168,12 @@ export default {
       return row[member]
     },
     // 大屏显示
-    bigScreen() {
-
+    bigScreen(id) {
+      const params = {
+        competitionId: this.competitionId,
+        message: JSON.stringify({ type: 'battle1v1', battleId: id })
+      }
+      sendWebSocketMessage({ ...params }).then()
     },
     // 判决
     judge(row) {

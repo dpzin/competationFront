@@ -79,8 +79,16 @@
       <el-table-column
         label="操作"
         align="center"
+        width="330px"
       >
         <template slot-scope="{row}">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleBigScreen(row.id)"
+          >
+            大屏显示
+          </el-button>
           <el-button
             type="primary"
             size="mini"
@@ -180,6 +188,10 @@ export default {
       this.$router.push({
         path: '/competition/addCompetition'
       })
+    },
+    // 显示大屏
+    handleBigScreen(id) {
+      window.open('//' + window.location.host + '/competition/bigScreen?competitionId=' + id)
     },
     // 查看详情
     handleDetail(id) {

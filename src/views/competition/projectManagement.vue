@@ -35,6 +35,7 @@
         :active="active"
         :competition-project-id="competitionProjectId"
         :competition-project-name="competitionProjectName"
+        :competition-id="competitionId"
       />
     </div>
   </div>
@@ -62,6 +63,7 @@ export default {
         this.competitionProjectId = res.data[0].id
         this.competitionProjectName = res.data[0].name
         this.processStatus = res.data[0].processStatus
+        this.competitionId = res.data[0].competitionId
       })
     }
   },
