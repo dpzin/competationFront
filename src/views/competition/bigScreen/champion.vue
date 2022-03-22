@@ -2,21 +2,32 @@
   <div class="championPage">
     <div class="title">大赛</div>
     <div class="type">
-      <span style="margin-right: 20px;">POPPING</span>
-      <span>大赛</span>
+      <span style="margin-right: 20px;">{{ competitionProjectName }}</span>
     </div>
     <div class="champion">CHAMPION</div>
-    <div class="name">高飞</div>
+    <div class="name">{{ championName }}</div>
     <div class="logo" />
   </div>
 </template>
 
 <script>
+import { getCompetitionProject, getChampionByProjectId } from '@/api/competition'
+
 export default {
   data() {
     return {
-
+      competitionProjectId: '2c9abe3f7f8c04c1017f8df0b0740001',
+      competitionProjectName: '',
+      championName: ''
     }
+  },
+  created() {
+    getCompetitionProject({ ids: [this.competitionProjectId] }).then(res => {
+      this.competitionProjectName = res.data[0].name
+    })
+    getChampionByProjectId({ id: this.competitionProjectId }).then(res => {
+      this.championName = res.data.name
+    })
   }
 }
 </script>

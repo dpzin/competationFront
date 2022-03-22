@@ -10,9 +10,9 @@
       >
         <div class="userName">{{ item.name }}</div>
         <div
-          v-if="item.type === 'guest'"
+          v-if="item.role === 'guest'"
           class="guest"
-        >{{ item.type }}</div>
+        >{{ item.role }}</div>
       </div>
     </div>
     <div class="logo" />
@@ -20,46 +20,24 @@
 </template>
 
 <script>
+import { listSeaSelection } from '@/api/competition'
+
 export default {
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          name: '一一',
-          type: 'common'
-        },
-        {
-          id: 2,
-          name: '子沐',
-          type: 'common'
-        },
-        {
-          id: 3,
-          name: '籽沐',
-          type: 'common'
-        },
-        {
-          id: 4,
-          name: '紫慕',
-          type: 'common'
-        },
-        {
-          id: 5,
-          name: '沐之',
-          type: 'common'
-        },
-        {
-          id: 6,
-          name: '沐晞',
-          type: 'common'
-        },
-        {
-          id: 7,
-          name: '木兮之芷',
-          type: 'guest'
-        }
-      ]
+      list: [],
+      competitionProjectId: '2c9abe3f7f8c04c1017f8df0b0740001'
+    }
+  },
+  created() {
+    this.getSeaSelectMember()
+  },
+  methods: {
+    getSeaSelectMember() {
+      listSeaSelection({ competitionProjectId: this.competitionProjectId }).then(res => {
+        this.list = res.data
+        console.log(res.data)
+      })
     }
   }
 }

@@ -109,3 +109,13 @@ export const getBattleInfo = (params) => {
 export const sendWebSocketMessage = (params) => {
   return request.post('/sendWebSocketMessage', { ...params })
 }
+
+// 获取海选名单
+export const listSeaSelection = (params) => {
+  return request.post('/listSeaSelection', { ...params })
+}
+
+// 获取冠军选手
+export const getChampionByProjectId = (params) => {
+  return request.post('/getChampionByProjectId', { ...params })
+}
