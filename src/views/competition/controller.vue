@@ -143,7 +143,7 @@ import { getCompetitionDetail, getCompetitionProject, listBattleTask, listBattle
 export default {
   data() {
     return {
-      competitionId: '2c9abe3f7f8c04c1017f8df0b0510000',
+      competitionId: this.$route.query.id,
       domain: process.env.VUE_APP_BASE_API,
       active: '',
       coverUrl: '',
@@ -153,11 +153,16 @@ export default {
       battleList: [],
       battleOptions: {},
       dialogVisible: false,
-      winner: ''
+      winner: '',
+      interval: null
     }
   },
   created() {
     this.getCompetition()
+    this.updateBattleList()
+  },
+  destroyed() {
+    this.clear()
   },
   methods: {
     async getCompetition() {
@@ -216,6 +221,7 @@ export default {
         })
       }
     },
+    // 大屏显示
     toBigScreen(type, processStatus) {
       if (processStatus === '0') {
         this.$message({
@@ -234,6 +240,20 @@ export default {
         }
         sendWebSocketMessage({ ...params }).then()
       }
+    },
+    // 定时器--实时获取对战列表信息
+    updateBattleList() {
+      if (this.interval !== null) {
+        return
+      }
+      this.interval = setInterval(() => {
+        this.getBattleList(this.task)
+      }, 5000)
+    },
+    // 清除定时器
+    clear() {
+      clearInterval(this.interval)
+      this.interval = null
     }
   }
 }

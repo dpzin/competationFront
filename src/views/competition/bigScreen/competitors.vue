@@ -71,6 +71,8 @@ export default {
     color: #ffffff;
   }
   .smallTitle {
+    height: 28px;
+    line-height: 28px;
     margin-top: 76px;
     text-align: center;
     font-size: 24px;
@@ -78,15 +80,14 @@ export default {
     color: #fbff97;
   }
   .main {
+    width: calc(100% - 308px);
+    height: calc(100% - 289px);
     margin: 54px 154px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    // &:after {
-    //   content: "";
-    //   width: 180px;
-    // }
     .user {
+      width: 180px;
       text-align: center;
       margin-bottom: 30px;
       height: 70px;
