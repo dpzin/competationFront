@@ -13,7 +13,7 @@
     <battle
       v-if="type === 'battle1v1'"
       :battle-id="battleId"
-      :competition-name="competitionName"
+      :competition-id="competitionId"
     />
     <champion
       v-if="type === 'champion'"
