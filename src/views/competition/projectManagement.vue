@@ -53,7 +53,8 @@ export default {
       active: '0-1',
       competitionProjectId: '',
       competitionProjectName: '',
-      processStatus: ''
+      processStatus: '',
+      competitionId: ''
     }
   },
   created() {

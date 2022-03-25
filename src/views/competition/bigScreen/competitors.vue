@@ -61,19 +61,23 @@ export default {
   height: 100%;
   background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
-  padding-top: 35px;
+  padding-top: 1.7%;
   .title {
-    height: 42px;
-    line-height: 42px;
+    margin: auto;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
-    color: #ffffff;
+    width: 650px;
+    height: 82px;
+    line-height: 82px;
+    color: #fff;
+    background: url("../../../assets/competition/title.png") no-repeat;
+    background-size: 100% 100%;
   }
   .smallTitle {
     height: 28px;
     line-height: 28px;
-    margin-top: 76px;
+    margin-top: 4%;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
