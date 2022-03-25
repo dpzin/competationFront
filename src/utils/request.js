@@ -44,13 +44,12 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code === 200) {
+    if (res.errorCode !== undefined && res.errorCode !== 'BattleInfoError') {
       Message({
-        message: res.message || res.code || '出错啦',
+        message: res.errorMessage,
         type: 'error',
         duration: 2 * 1000
       })
-      return Promise.reject(new Error(res.message || '出错啦'))
     } else {
       return res
     }
