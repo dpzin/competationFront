@@ -1,11 +1,27 @@
 <template>
   <div class="battlePage">
-    <div class="title">{{ competition.name }}</div>
+    <div class="head">
+      <div class="sponsor">
+        <img
+          v-for="item in competition.sponsorUrlList"
+          :key="item"
+          :src="domain + item"
+        >
+      </div>
+      <div class="title">{{ competition.name }}</div>
+      <div class="sign">
+        <img
+          src="../../../assets/white-logo.png"
+          width="200px"
+          height="70px"
+        >
+      </div>
+    </div>
     <div class="type">
       <span style="margin-right: 20px;">{{ battleInfo.projectName }}</span>
       <span>{{ battleInfo.taskName }}</span>
     </div>
-    <div class="main"><img :src="competition.battleIconUrl"></div>
+    <div class="battleLogo"><img :src="domain + competition.battleIconUrl"></div>
     <div class="battle">
       <div class="name">{{ battleInfo.leftMember.name }}</div>
       <div class="vs" />
@@ -31,6 +47,7 @@ export default {
   data() {
     return {
       competition: {},
+      domain: process.env.VUE_APP_BASE_API,
       battleInfo: {
         leftMember: {},
         rightMember: {},
@@ -42,10 +59,14 @@ export default {
   watch: {
     battleId() {
       this.getBattle()
+    },
+    competitionId() {
+      this.getCompetition()
     }
   },
   created() {
     this.getBattle()
+    this.getCompetition()
   },
   methods: {
     getBattle() {
@@ -72,18 +93,36 @@ export default {
   background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   padding-top: 1.7%;
-  .title {
-    text-align: center;
-    font-size: 36px;
-    font-weight: bold;
-    width: 650px;
-    height: 82px;
-    line-height: 82px;
-    margin: auto;
-    color: #fff;
-    background: url("../../../assets/competition/title.png") no-repeat;
-    background-size: 100% 100%;
+  .head {
+    display: flex;
+    .sponsor {
+      flex: 1;
+      text-align: center;
+      img {
+        margin: 2% 2% 0;
+      }
+    }
+    .title {
+      flex: 1;
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+      width: 650px;
+      height: 82px;
+      line-height: 82px;
+      color: #fff;
+      background: url("../../../assets/competition/title.png") no-repeat;
+      background-size: 100% 100%;
+    }
+    .sign {
+      flex: 1;
+      text-align: right;
+      img {
+        margin: 1% 15% 0;
+      }
+    }
   }
+
   .type {
     margin-top: 80px;
     text-align: center;
@@ -91,8 +130,14 @@ export default {
     font-weight: bold;
     color: #fbff97;
   }
-  .main {
-    margin: 40px auto;
+  .battleLogo {
+    height: 50%;
+    margin: 2% 0;
+    img {
+      display: block;
+      height: 100%;
+      margin: auto;
+    }
   }
   .battle {
     display: flex;
