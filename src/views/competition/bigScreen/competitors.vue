@@ -85,7 +85,7 @@ export default {
   }
   .main {
     width: calc(100% - 308px);
-    height: calc(100% - 289px);
+    height: calc(94.3% - 218px);
     margin: 54px 154px;
     display: flex;
     flex-wrap: wrap;

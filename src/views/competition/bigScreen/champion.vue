@@ -47,13 +47,18 @@ export default {
   height: 100%;
   background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
+  padding-top: 1.7%;
   .title {
+    margin: auto;
     text-align: center;
     font-size: 36px;
     font-weight: bold;
-    padding-top: 2.5%;
-    height: 90px;
+    width: 650px;
+    height: 82px;
+    line-height: 82px;
     color: #fff;
+    background: url("../../../assets/competition/title.png") no-repeat;
+    background-size: 100% 100%;
   }
   .type {
     margin-top: 80px;
