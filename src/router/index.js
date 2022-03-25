@@ -107,12 +107,6 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/competition/controller',
-    component: () => import('@/views/competition/controller'),
-    name: 'test',
-    meta: { title: 'MC', icon: 'el-icon-s-check' }
-  },
-  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true

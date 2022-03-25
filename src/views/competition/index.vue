@@ -92,9 +92,16 @@
           <el-button
             type="primary"
             size="mini"
+            @click="handleBigScreenController(row.id)"
+          >
+            大屏遥控
+          </el-button>
+          <el-button
+            type="primary"
+            size="mini"
             @click="handleDetail(row.id)"
           >
-            查看详情
+            详情
           </el-button>
           <el-button
             type="primary"
@@ -207,7 +214,11 @@ export default {
     handleBigScreen(id) {
       window.open('//' + window.location.host + '/competition/bigScreen?competitionId=' + id)
     },
-    // 查看详情
+    // 显示大屏遥控
+    handleBigScreenController(id) {
+      window.open('//' + window.location.host + '/competition/controller?id=' + id)
+    },
+    // 详情
     handleDetail(id) {
       getCompetitionDetail({ id }).then(res => {
         this.detail = res.data
