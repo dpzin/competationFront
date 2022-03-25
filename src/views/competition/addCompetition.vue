@@ -5,7 +5,7 @@
       :rules="rules"
       :model="competition"
       label-position="left"
-      label-width="100px"
+      label-width="140px"
       style="width: 500px; margin-left:50px; margin-top:20px;"
     >
       <el-form-item
@@ -83,12 +83,13 @@
           :on-success="playBillSuccess"
           :limit="1"
           :file-list="competition.posterUrl"
+          :on-exceed="limit"
         >
           <i class="el-icon-plus" />
         </el-upload>
       </el-form-item>
       <el-form-item
-        label="大屏背景"
+        label="大屏主背景"
         prop="coverUrl"
       >
         <el-upload
@@ -98,6 +99,37 @@
           :on-success="backgroundSuccess"
           :limit="1"
           :file-list="competition.coverUrl"
+          :on-exceed="limit"
+        >
+          <i class="el-icon-plus" />
+        </el-upload>
+      </el-form-item>
+      <el-form-item
+        label="大屏对战LOGO"
+        prop="battleIconUrl"
+      >
+        <el-upload
+          :action="domain + '/bjss/uploadPhotos'"
+          list-type="picture-card"
+          accept=".jpg,.png,.jpeg"
+          :on-success="logoSuccess"
+          :limit="1"
+          :file-list="competition.battleIconUrl"
+          :on-exceed="limit"
+        >
+          <i class="el-icon-plus" />
+        </el-upload>
+      </el-form-item>
+      <el-form-item
+        label="赞助商LOGO"
+        prop="sponsorUrlList"
+      >
+        <el-upload
+          :action="domain + '/bjss/uploadPhotos'"
+          list-type="picture-card"
+          accept=".jpg,.png,.jpeg"
+          :on-success="sponsorSuccess"
+          :file-list="competition.sponsorUrlList"
         >
           <i class="el-icon-plus" />
         </el-upload>
@@ -128,6 +160,8 @@ export default {
         startTime: '',
         posterUrl: [],
         coverUrl: [],
+        battleIconUrl: [],
+        sponsorUrlList: [],
         price: 0,
         projects: []
       },
@@ -144,7 +178,8 @@ export default {
         projects: [{ required: true, message: '赛事项目不能为空！', trigger: 'blur' }],
         price: [{ required: true, message: '参数费用不能为空！', trigger: 'blur' }],
         posterUrl: [{ required: true, message: '宣传海报不能为空！', trigger: 'blur' }],
-        coverUrl: [{ required: true, message: '大屏背景不能为空！', trigger: 'blur' }]
+        coverUrl: [{ required: true, message: '大屏主背景不能为空！', trigger: 'blur' }],
+        battleIconUrl: [{ required: true, message: '大屏对战LOGO不能为空！', trigger: 'blur' }]
       },
       domain: process.env.VUE_APP_BASE_API
     }
@@ -155,6 +190,10 @@ export default {
         this.competition = res.data
         this.competition.posterUrl = [{ url: this.domain + res.data.posterUrl }]
         this.competition.coverUrl = [{ url: this.domain + res.data.coverUrl }]
+        this.competition.battleIconUrl = [{ url: this.domain + res.data.battleIconUrl }]
+        this.competition.sponsorUrlList = res.data.sponsorUrlList.map(item => {
+          return { url: this.domain + item }
+        })
       })
     }
   },
@@ -166,14 +205,30 @@ export default {
       if (!flag) this.$message.error('仅支持上传jpg、png、jpeg格式文件')
       return flag
     },
+    // 文件超出个数限制
+    limit(files) {
+      if (files) {
+        this.$message({
+          message: '只能上传一张图片！',
+          type: 'error'
+        })
+      }
+    },
     // 上传海报
     playBillSuccess(res) {
-      console.log(res)
       this.competition.posterUrl = [{ url: this.domain + res.data }]
     },
     // 上传背景
     backgroundSuccess(res) {
       this.competition.coverUrl = [{ url: this.domain + res.data }]
+    },
+    // 上传大屏对战logo
+    logoSuccess(res) {
+      this.competition.battleIconUrl = [{ url: this.domain + res.data }]
+    },
+    // 上传赞助商logo
+    sponsorSuccess(res) {
+      this.competition.sponsorUrlList.push({ url: this.domain + res.data })
     },
     // 清空表单并移除校验
     resetForm() {
@@ -183,6 +238,8 @@ export default {
         startTime: '',
         posterUrl: [],
         coverUrl: [],
+        battleIconUrl: [],
+        sponsorUrlList: [],
         price: 0,
         projects: []
       }
@@ -190,17 +247,24 @@ export default {
     },
     // 文件地址处理
     formatFile(file) {
-      const str = file[0].url
-      return str.slice(str.indexOf('/image'))
+      if (file.length === 1) {
+        const str = file[0].url
+        return str.slice(str.indexOf('/image'))
+      } else {
+        return file.map(item => {
+          return item.url.slice(item.url.indexOf('/image'))
+        })
+      }
     },
     // 提交赛事
     submit() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确定要提交表单吗？').then(_ => {
-            console.log('编辑', this.competition)
             this.competition.posterUrl = this.formatFile(this.competition.posterUrl)
             this.competition.coverUrl = this.formatFile(this.competition.coverUrl)
+            this.competition.battleIconUrl = this.formatFile(this.competition.battleIconUrl)
+            this.competition.sponsorUrlList = this.formatFile(this.competition.sponsorUrlList)
             const api = this.$route.query.id ? updateCompetition({ ...this.competition, id: this.$route.query.id }) : addCompetition(this.competition)
             api.then(res => {
               this.resetForm()

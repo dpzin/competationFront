@@ -237,11 +237,11 @@
         ref="form"
         :model="form"
         :rules="rules"
+        label-width="100px"
       >
         <el-form-item
           label="姓名"
           prop="name"
-          label-width="100px"
         >
           <el-input
             v-model="form.name"
@@ -251,7 +251,6 @@
         <el-form-item
           label="角色"
           prop="role"
-          label-width="100px"
         >
           <el-radio
             v-model="form.role"
@@ -262,6 +261,21 @@
             label="guest"
           >guest</el-radio>
         </el-form-item>
+        <!-- <el-form-item
+          label="头像"
+          prop="headImgUrl"
+        >
+          <el-upload
+            :action="domain + '/bjss/uploadPhotos'"
+            list-type="picture-card"
+            accept=".jpg,.png,.jpeg"
+            :on-success="uploadImgUrl"
+            :limit="1"
+            :file-list="form.imgUrl"
+          >
+            <i class="el-icon-plus" />
+          </el-upload>
+        </el-form-item> -->
       </el-form>
       <div
         slot="footer"
@@ -348,12 +362,14 @@ export default {
       addPlayerDialog: false,
       form: {
         name: '',
-        role: 'common'
+        role: 'common',
+        imgUrl: ''
       },
       rules: {
         name: [{ required: true, message: '姓名不能为空！', trigger: 'blur' }],
         role: [{ required: true, message: '角色不能为空！', trigger: 'blur' }]
       },
+      domain: process.env.VUE_APP_BASE_API,
       filters: [{ value: 'signed', text: '已签到' }, { value: 'unSigned', text: '未签到' }],
       contestantList: [], // 海选选手列表（已经签到的）
       contestantLoading: false,
@@ -427,11 +443,16 @@ export default {
         this.judgesList = res.data
       })
     },
+    // 上传海报
+    uploadImgUrl(res) {
+      this.form.imgUrl = [{ url: this.domain + res.data }]
+    },
     // 重置表单
     resetForm() {
       this.form = {
         name: '',
-        role: 'common'
+        role: 'common',
+        imgUrl: ''
       }
       this.$refs['form'].resetFields()
       this.addPlayerDialog = false

@@ -134,24 +134,38 @@
           label="赛事描述"
           :span="2"
         >{{ detail.description }}</el-descriptions-item>
-        <el-descriptions-item
-          label="宣传海报"
-          :span="2"
-        >
+        <el-descriptions-item label="宣传海报">
           <img
             :src="domain + detail.posterUrl"
             width="148"
             height="148"
           >
         </el-descriptions-item>
-        <el-descriptions-item
-          label="大屏背景"
-          :span="2"
-        >
+        <el-descriptions-item label="大屏主背景">
           <img
             :src="domain + detail.coverUrl"
             width="148"
             height="148"
+          >
+        </el-descriptions-item>
+        <el-descriptions-item
+          label="大屏对战LOGO"
+          :span="2"
+        >
+          <img
+            :src="domain + detail.battleIconUrl"
+            width="148"
+            height="148"
+          >
+        </el-descriptions-item>
+        <el-descriptions-item
+          label="赞助商LOGO"
+          :span="2"
+        >
+          <img
+            v-for="item in detail.sponsorUrlList"
+            :key="item"
+            :src="domain + item"
           >
         </el-descriptions-item>
       </el-descriptions>
@@ -243,6 +257,23 @@ export default {
     color: #409eff;
     text-decoration: underline;
     cursor: pointer;
+  }
+}
+::v-deep .el-dialog__header {
+  background-color: #abb0c7;
+  border-bottom: 1px solid #fff;
+  .el-dialog__title {
+    color: #fff;
+  }
+  .el-dialog__headerbtn .el-dialog__close {
+    color: #fff;
+  }
+}
+::v-deep .el-dialog__body {
+  background-color: #abb0c7;
+  .el-descriptions__body {
+    color: #fff;
+    background-color: #abb0c7;
   }
 }
 </style>

@@ -1,36 +1,36 @@
 <template>
   <div class="battlePage">
-    <div class="title">{{ competitionName }}</div>
+    <div class="title">{{ competition.name }}</div>
     <div class="type">
       <span style="margin-right: 20px;">{{ battleInfo.projectName }}</span>
       <span>{{ battleInfo.taskName }}</span>
     </div>
-    <div class="main" />
+    <div class="main"><img :src="competition.battleIconUrl"></div>
     <div class="battle">
       <div class="name">{{ battleInfo.leftMember.name }}</div>
-      <div class="vs">VS</div>
+      <div class="vs" />
       <div class="name">{{ battleInfo.rightMember.name }}</div>
     </div>
-    <div class="logo" />
+    <div class="logo">本赛事系统由不羁超级赛事提供</div>
   </div>
 </template>
 
 <script>
-import { getBattleInfo } from '@/api/competition'
-
+import { getBattleInfo, getCompetitionDetail } from '@/api/competition'
 export default {
   props: {
     battleId: {
       type: String,
       required: true
     },
-    competitionName: {
+    competitionId: {
       type: String,
       required: true
     }
   },
   data() {
     return {
+      competition: {},
       battleInfo: {
         leftMember: {},
         rightMember: {},
@@ -52,6 +52,14 @@ export default {
       getBattleInfo({ id: this.battleId }).then(res => {
         this.battleInfo = res.data
       })
+    },
+    async getCompetition() {
+      if (this.competitionId) {
+        // 获取赛事大屏背景
+        await getCompetitionDetail({ id: this.competitionId }).then(res => {
+          this.competition = res.data
+        })
+      }
     }
   }
 }
@@ -63,13 +71,18 @@ export default {
   height: 100%;
   background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
+  padding-top: 1.7%;
   .title {
     text-align: center;
     font-size: 36px;
     font-weight: bold;
-    padding-top: 2.5%;
-    height: 90px;
+    width: 650px;
+    height: 82px;
+    line-height: 82px;
+    margin: auto;
     color: #fff;
+    background: url("../../../assets/competition/title.png") no-repeat;
+    background-size: 100% 100%;
   }
   .type {
     margin-top: 80px;
@@ -79,30 +92,24 @@ export default {
     color: #fbff97;
   }
   .main {
-    width: 380px;
-    height: 380px;
     margin: 40px auto;
-    background: url("../../../assets/SUPBOOGIE-logo-07.png") no-repeat;
-    background-size: 100% 100%;
   }
   .battle {
     display: flex;
     justify-content: center;
     .vs {
-      height: 61px;
-      line-height: 61px;
-      margin-left: 220px;
-      margin-right: 220px;
-      font-size: 27px;
-      font-weight: 600;
-      color: #fbff97;
+      width: 104px;
+      height: 93px;
+      background: url("../../../assets/competition/1v1-VS.png") no-repeat;
+      background-size: 100% 100%;
+      margin: 0 227px;
     }
     .name {
-      width: 200px;
-      height: 61px;
+      width: 300px;
+      height: 100px;
       background: url("../../../assets/competition/user.svg") no-repeat;
       background-size: 100% 100%;
-      line-height: 61px;
+      line-height: 100px;
       text-align: center;
       font-size: 27px;
       font-weight: 600;
@@ -110,14 +117,14 @@ export default {
     }
   }
   .logo {
-    width: 280px;
-    height: 90px;
-    background: url("../../../assets/logo.png") no-repeat;
-    background-size: 100% 100%;
     position: fixed;
     bottom: 50px;
     right: 50%;
     transform: translate(50%);
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 20px;
+    opacity: 0.5;
   }
 }
 </style>
