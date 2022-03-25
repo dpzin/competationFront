@@ -119,3 +119,8 @@ export const listSeaSelection = (params) => {
 export const getChampionByProjectId = (params) => {
   return request.post('/getChampionByProjectId', { ...params })
 }
+
+// 下载裁判打分excel
+export const downloadSeaMemberExcel = (params) => {
+  return request.get('/downloadSeaMemberExcel', { ...params })
+}

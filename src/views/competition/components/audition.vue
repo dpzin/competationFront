@@ -59,6 +59,15 @@
       >
         录入选手
       </el-button>
+      <el-button
+        v-show="!finishFlag"
+        type="primary"
+        icon="el-icon-create"
+        style="margin-bottom: 20px;"
+        @click="downloadExcel"
+      >
+        下载Excel(已签到)
+      </el-button>
       <el-table
         key="playerTable"
         v-loading="playerLoading"
@@ -614,6 +623,19 @@ export default {
           })
         }
       })
+    },
+    // 下载Excel
+    downloadExcel() {
+      debugger
+      if (this.judgesList.length === 0) {
+        this.$message({
+          message: '裁判未录入, 不可下载',
+          type: 'error'
+        })
+        return
+      }
+
+      window.location.href = process.env.VUE_APP_BASE_API + '/bjss/downloadSeaMemberExcel?id=' + this.competitionProjectId
     }
   }
 }
