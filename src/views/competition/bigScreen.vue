@@ -45,12 +45,13 @@ export default {
       coverUrl: '',
       competitionName: '',
       battleId: '',
-      competitionProjectId: ''
+      competitionProjectId: '',
+      socketId: ''
     }
   },
   async created() {
     const uuid = this.uuid()
-    this.id = this.$route.query.competitionId + uuid
+    this.socketId = this.$route.query.competitionId + uuid
     this.initWebSocket()
     if (this.$route.query.competitionId) {
       // 获取赛事大屏背景
@@ -65,7 +66,7 @@ export default {
     initWebSocket() { // 初始化weosocket
       const ref = this
       // ws地址
-      var wsuri = 'ws://' + process.env.VUE_APP_WS_API + ':16666' + '/webSocket/' + this.id
+      var wsuri = 'ws://' + process.env.VUE_APP_WS_API + ':16666' + '/webSocket/' + this.socketId
       websock = new WebSocket(wsuri)
       websock.onmessage = (e) => {
         ref.websocketonmessage(e)

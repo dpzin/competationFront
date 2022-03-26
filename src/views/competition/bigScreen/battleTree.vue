@@ -151,7 +151,7 @@ export default {
   created() {
     this.getBigScreenInfo(this.competitionProjectId)
     this.widthRate = document.body.clientWidth / 1920
-    this.heightRate = document.body.clientHeight / 937
+    this.heightRate = document.body.clientHeight / 1080
   },
   methods: {
     getBigScreenInfo() {
