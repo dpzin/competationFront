@@ -1,5 +1,8 @@
 <template>
-  <div class="battleTree" :style="{'--widthRate':widthRate ,'--heightRate':heightRate}">
+  <div
+    class="battleTree"
+    :style="{'--widthRate':widthRate ,'--heightRate':heightRate}"
+  >
     <div class="title">{{ competitionName }}</div>
     <div class="main">
       <div class="left">
@@ -171,19 +174,24 @@ export default {
   background: url("../../../assets/competition/bg.png") no-repeat;
   background-size: 100% 100%;
   color: #fff;
+  padding-top: 1.7%;
   .title {
+    margin: auto;
     text-align: center;
-    font-size: calc(36px* var(--widthRate));
+    font-size: calc(36px * var(--widthRate));
     font-weight: bold;
-    padding-top: 2.5%;
-    height: calc(90px * var(--heightRate));
+    width: calc(650px * var(--widthRate));
+    height: calc(82px * var(--heightRate));
+    line-height: calc(82px * var(--heightRate));
+    background: url("../../../assets/competition/title.png") no-repeat;
+    background-size: 100% 100%;
   }
   .main {
     display: flex;
     justify-content: center;
     height: calc(844px * var(--heightRate));
     .name {
-      width: calc(133px* var(--widthRate));
+      width: calc(133px * var(--widthRate));
       height: calc(40px * var(--heightRate));
       text-align: center;
       line-height: calc(40px * var(--heightRate));
@@ -206,7 +214,7 @@ export default {
     .line16 {
       background: url("../../../assets/competition/32-16.png") no-repeat;
       background-size: 100% 100%;
-      width: calc(30px* var(--widthRate));
+      width: calc(30px * var(--widthRate));
       height: calc(48px * var(--heightRate));
       margin-top: calc(60px * var(--heightRate));
       &:first-child {
@@ -227,7 +235,7 @@ export default {
     .line8 {
       background: url("../../../assets/competition/16-8.png") no-repeat;
       background-size: 100% 100%;
-      width: calc(30px* var(--widthRate));
+      width: calc(30px * var(--widthRate));
       height: calc(108px * var(--heightRate));
       margin-top: calc(108px * var(--heightRate));
       &:first-child {
@@ -248,7 +256,7 @@ export default {
     .line4 {
       background: url("../../../assets/competition/8-4.png") no-repeat;
       background-size: 100% 100%;
-      width: calc(30px* var(--widthRate));
+      width: calc(30px * var(--widthRate));
       height: calc(216px * var(--heightRate));
       margin-top: calc(216px * var(--heightRate));
       &:first-child {
@@ -269,7 +277,7 @@ export default {
     .line2 {
       background: url("../../../assets/competition/4-2.png") no-repeat;
       background-size: 100% 100%;
-      width: calc(30px* var(--widthRate));
+      width: calc(30px * var(--widthRate));
       height: calc(432px * var(--heightRate));
       margin-top: calc(206px * var(--heightRate));
     }
@@ -299,24 +307,25 @@ export default {
       text-align: center;
       .type {
         height: calc(32px * var(--heightRate));
-        font-size: calc(24px* var(--widthRate));
+        font-size: calc(24px * var(--widthRate));
         font-weight: bold;
         margin-top: calc(48px * var(--heightRate));
       }
       .winner {
         color: #fbff97;
         font-weight: 900;
-        font-size: calc(40px* var(--widthRate));
+        font-size: calc(40px * var(--widthRate));
         margin-top: calc(160px * var(--heightRate));
       }
       .champion {
-        width: calc(133px* var(--widthRate));
+        width: calc(133px * var(--widthRate));
         height: calc(40px * var(--heightRate));
         text-align: center;
         line-height: calc(40px * var(--heightRate));
         background: url("../../../assets/competition/champion.png") no-repeat;
         background-size: 100% 100%;
-        margin: calc(30px * var(--heightRate)) auto calc(46px * var(--heightRate));
+        margin: calc(30px * var(--heightRate)) auto
+          calc(46px * var(--heightRate));
       }
       .roundFive {
         display: flex;
@@ -325,7 +334,7 @@ export default {
         .line1 {
           background: url("../../../assets/competition/2-1.png") no-repeat;
           background-size: 100% 100%;
-          width: calc(74px* var(--widthRate));
+          width: calc(74px * var(--widthRate));
           height: calc(1px * var(--heightRate));
         }
       }
