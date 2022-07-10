@@ -15,36 +15,28 @@
           <div class="head">
             <div class="box">
               <img
-                :src="domain + coverUrl"
-                width="167"
-                height="94"
+                src="../../assets/main.png"
                 @click="toBigScreen('main')"
               >
               <div class="box-title">主画面</div>
             </div>
             <div class="box">
               <img
-                :src="domain + coverUrl"
-                width="167"
-                height="94"
+                src="../../assets/memberlist.png"
                 @click="toBigScreen('competitors',item.processStatus)"
               >
               <div class="box-title">海选名单</div>
             </div>
             <div class="box">
               <img
-                :src="domain + coverUrl"
-                width="167"
-                height="94"
+                src="../../assets/battle_map.png"
                 @click="toBigScreen('battleInfo', item.processStatus)"
               >
               <div class="box-title">对战图</div>
             </div>
             <div class="box">
               <img
-                :src="domain + coverUrl"
-                width="167"
-                height="94"
+                src="../../assets/champion.png"
                 @click="toBigScreen('champion', item.processStatus)"
               >
               <div class="box-title">冠军</div>
@@ -298,7 +290,7 @@ export default {
     }
     .main {
       width: 100%;
-      height: calc(100% - 326px);
+      height: calc(100% - 120px);
       padding: 20px;
       padding-bottom: 0;
       background: #00082c;

@@ -66,19 +66,22 @@ export default {
     initWebSocket() { // 初始化weosocket
       const ref = this
       // ws地址
-      var wsuri = 'ws://' + process.env.VUE_APP_WS_API + ':16666' + '/webSocket/' + this.socketId
+      var wsuri = process.env.VUE_APP_WS_API + '/bjss/webSocket/' + this.socketId
+      console.log(wsuri)
       websock = new WebSocket(wsuri)
       websock.onmessage = (e) => {
         ref.websocketonmessage(e)
       }
       websock.onclose = (e) => {
+        ref.reconnect()
         ref.websocketclose(e)
       }
       websock.onopen = () => {
         // ref.websocketOpen()
       }
       // 连接发生错误的回调方法
-      websock.onerror = () => {
+      websock.onerror = (e) => {
+        ref.reconnect()
         console.log('WebSocket连接发生错误')
       }
     },
@@ -104,6 +107,9 @@ export default {
         this.battleId = socketMessage.battleId
         this.competitionProjectId = socketMessage.competitionProjectId
       }
+    },
+    reconnect() {
+      this.initWebSocket()
     },
     websocketsend(agentData) {
       websock.send(JSON.stringify(agentData))
