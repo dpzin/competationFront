@@ -61,6 +61,20 @@
         <el-input-number v-model="competition.price" />
       </el-form-item>
       <el-form-item
+        label="海选"
+        prop="eliminateMemberSize"
+      >
+        <el-select v-model="competition.eliminateMemberSize" placeholder="请选择">
+          <el-option
+            v-for="item in selectNum"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
         label="赛事描述"
         prop="description"
       >
@@ -163,6 +177,7 @@ export default {
         battleIconUrl: [],
         sponsorUrlList: [],
         price: 0,
+        eliminateMemberSize: 32,
         projects: []
       },
       rules: {
@@ -179,9 +194,11 @@ export default {
         price: [{ required: true, message: '参数费用不能为空！', trigger: 'blur' }],
         posterUrl: [{ required: true, message: '宣传海报不能为空！', trigger: 'blur' }],
         coverUrl: [{ required: true, message: '大屏主背景不能为空！', trigger: 'blur' }],
-        battleIconUrl: [{ required: true, message: '大屏对战LOGO不能为空！', trigger: 'blur' }]
+        battleIconUrl: [{ required: true, message: '大屏对战LOGO不能为空！', trigger: 'blur' }],
+        domain: process.env.VUE_APP_BASE_API
       },
-      domain: process.env.VUE_APP_BASE_API
+      selectNum: [{ value: 16, label: '16强' }, { value: 32, label: '32强' }]
+
     }
   },
   created() {
