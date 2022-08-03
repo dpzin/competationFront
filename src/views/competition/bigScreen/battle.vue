@@ -27,7 +27,7 @@
       <div class="vs" />
       <div class="name">{{ battleInfo.rightMember.name }}</div>
     </div>
-    <div class="logo">本赛事系统由不羁超级赛事提供</div>
+    <div class="logo">本赛事系统由苏州工业园区不羁软件工作室提供</div>
   </div>
 </template>
 

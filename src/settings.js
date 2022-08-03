@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '超级不羁赛事系统',
+  title: '不羁赛事系统',
 
   /**
    * @type {boolean} true | false

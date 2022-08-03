@@ -6,14 +6,17 @@
     <div class="title">{{ competitionName }}</div>
     <div class="main">
       <div class="left">
-        <div class="roundOne">
+        <div
+          v-if="user.left.roundOne.length > 0"
+          class="roundOne"
+        >
           <div
             v-for="(item,index) in user.left.roundOne"
             :key="index"
             class="name"
           >{{ item.name }}</div>
         </div>
-        <div>
+        <div v-if="user.left.roundOne.length > 0">
           <div
             v-for="(item) in 8"
             :key="item"
@@ -104,14 +107,17 @@
             class="name"
           >{{ item.name }}</div>
         </div>
-        <div>
+        <div v-if="user.right.roundOne.length > 0">
           <div
             v-for="(item) in 8"
             :key="item"
             class="line16 line16-r"
           />
         </div>
-        <div class="roundOne">
+        <div
+          v-if="user.right.roundOne.length > 0"
+          class="roundOne"
+        >
           <div
             v-for="(item,index) in user.right.roundOne"
             :key="index"

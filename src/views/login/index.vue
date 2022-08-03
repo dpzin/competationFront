@@ -10,7 +10,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">超级不羁赛事系统</h3>
+        <h3 class="title">不羁赛事系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -56,12 +56,7 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
-
-      <!-- <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div> -->
+      >登录</el-button>
 
     </el-form>
   </div>
@@ -140,7 +135,7 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg: #283443;
+$bg: rgba(0, 0, 0, 0.1);
 $light_gray: #fff;
 $cursor: #fff;
 
@@ -168,8 +163,11 @@ $cursor: #fff;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
+        -webkit-text-fill-color: #ededed !important; //字体颜色
+        box-shadow: 0 0 0px 1000px transparent inset !important;
+        background-color: transparent;
+        background-image: none;
+        transition: background-color 50000s ease-in-out 0s;
       }
     }
   }
@@ -191,7 +189,6 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  // background-color: $bg;
   background-image: url(../../assets/loginBg.png);
   overflow: hidden;
 
