@@ -23,21 +23,21 @@
             <div class="box">
               <img
                 src="../../assets/memberlist.png"
-                @click="toBigScreen('competitors',item.processStatus)"
+                @click="toBigScreen('competitors',item.id)"
               >
               <div class="box-title">海选名单</div>
             </div>
             <div class="box">
               <img
                 src="../../assets/battle_map.png"
-                @click="toBigScreen('battleInfo', item.processStatus)"
+                @click="toBigScreen('battleInfo', item.id)"
               >
               <div class="box-title">对战图</div>
             </div>
             <div class="box">
               <img
                 src="../../assets/champion.png"
-                @click="toBigScreen('champion', item.processStatus)"
+                @click="toBigScreen('champion', item.id)"
               >
               <div class="box-title">冠军</div>
             </div>
@@ -214,7 +214,12 @@ export default {
       }
     },
     // 大屏显示
-    toBigScreen(type, processStatus) {
+    async toBigScreen(type, id) {
+      const projects = await getCompetitionProject({ ids: [id], competitionId: this.competitionId }).then((res) => {
+        return res.data
+      })
+      const processStatus = projects[0].processStatus
+      console.log(processStatus)
       if (processStatus === '0') {
         this.$message({
           message: '海选尚未完成，不可操作！',
