@@ -16,7 +16,7 @@
             <div class="box">
               <img
                 src="../../assets/main.png"
-                @click="toBigScreen('main')"
+                @click="toBigScreen('main',item.id)"
               >
               <div class="box-title">主画面</div>
             </div>
