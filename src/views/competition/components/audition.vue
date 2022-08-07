@@ -616,7 +616,6 @@ export default {
     secondChoosePlayer() {
       this.$refs['secondChooseFrom'].validate((valid) => {
         if (valid) {
-          console.log(this.secondForm.player)
           updateAudition2Result({ ids: this.secondForm.player }).then(res => {
             this.resetSecondChooseForm()
             this.getBattleTree()

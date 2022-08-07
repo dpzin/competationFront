@@ -118,7 +118,7 @@ export default {
       flex: 1;
       text-align: right;
       img {
-        margin: 1% 15% 0;
+        margin: 2% 15% 0;
       }
     }
   }
@@ -131,7 +131,7 @@ export default {
     color: #fbff97;
   }
   .battleLogo {
-    height: 50%;
+    height: 40%;
     margin: 2% 0;
     img {
       display: block;
@@ -163,12 +163,12 @@ export default {
   }
   .logo {
     position: fixed;
-    bottom: 50px;
+    bottom: 5%;
     right: 50%;
     transform: translate(50%);
     color: #fff;
     font-size: 20px;
-    letter-spacing: 20px;
+    letter-spacing: 10px;
     opacity: 0.5;
   }
 }

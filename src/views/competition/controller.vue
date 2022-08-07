@@ -15,31 +15,43 @@
           <div class="head">
             <div class="box">
               <img
-                src="../../assets/main.png"
+                :src="selected ==='main'? require('../../assets/main-active.png') : require('../../assets/main.png')"
                 @click="toBigScreen('main',item.id)"
               >
-              <div class="box-title">主画面</div>
+              <div
+                class="box-title"
+                :class="{selected: selected === 'main'}"
+              >主画面</div>
             </div>
             <div class="box">
               <img
-                src="../../assets/memberlist.png"
+                :src="selected ==='competitors' ? require('../../assets/memberlist-active.png'):require('../../assets/memberlist.png')"
                 @click="toBigScreen('competitors',item.id)"
               >
-              <div class="box-title">海选名单</div>
+              <div
+                class="box-title"
+                :class="{selected: selected === 'competitors'}"
+              >海选名单</div>
             </div>
             <div class="box">
               <img
-                src="../../assets/battle_map.png"
+                :src="selected === 'battleInfo'? require('../../assets/battle_map-active.png'):require('../../assets/battle_map.png')"
                 @click="toBigScreen('battleInfo', item.id)"
               >
-              <div class="box-title">对战图</div>
+              <div
+                class="box-title"
+                :class="{selected: selected === 'battleInfo'}"
+              >对战图</div>
             </div>
             <div class="box">
               <img
-                src="../../assets/champion.png"
+                :src="selected === 'champion' ? require('../../assets/champion-active.png'): require('../../assets/champion.png')"
                 @click="toBigScreen('champion', item.id)"
               >
-              <div class="box-title">冠军</div>
+              <div
+                class="box-title"
+                :class="{selected: selected === 'champion'}"
+              >冠军</div>
             </div>
           </div>
           <div class="main">
@@ -63,7 +75,7 @@
                 <div class="name-line">
                   <div
                     class="name"
-                    :class="{nameActive: battle.win === battle.leftMemberId}"
+                    :class="{nameActive: battle.win === battle.leftMemberId, nameLoser: battle.win !== battle.leftMemberId}"
                   >{{ battle.leftMemberName }}</div>
                   <img
                     src="../../assets/competition/vs.png"
@@ -71,7 +83,7 @@
                   >
                   <div
                     class="name"
-                    :class="{nameActive: battle.win === battle.rightMemberId}"
+                    :class="{nameActive: battle.win === battle.rightMemberId, nameLoser: battle.win !== battle.rightMemberId}"
                   >{{ battle.rightMemberName }}</div>
                 </div>
                 <el-divider />
@@ -146,7 +158,8 @@ export default {
       battleOptions: {},
       dialogVisible: false,
       winner: '',
-      interval: null
+      interval: null,
+      selected: 'main'
     }
   },
   created() {
@@ -199,7 +212,13 @@ export default {
         competitionId: this.competitionId,
         message: JSON.stringify({ type: 'battle1v1', battleId: id })
       }
-      sendWebSocketMessage({ ...params }).then()
+      sendWebSocketMessage({ ...params }).then(res => {
+        this.selected = ''
+        this.$message({
+          message: '操作成功！',
+          type: 'success'
+        })
+      })
     },
     // 判决
     judge(row) {
@@ -219,7 +238,6 @@ export default {
         return res.data
       })
       const processStatus = projects[0].processStatus
-      console.log(processStatus)
       if (processStatus === '0') {
         this.$message({
           message: '海选尚未完成，不可操作！',
@@ -237,6 +255,11 @@ export default {
         }
         sendWebSocketMessage({ ...params }).then()
       }
+      this.selected = type
+      this.$message({
+        message: '操作成功！',
+        type: 'success'
+      })
     },
     // 定时器--实时获取对战列表信息
     updateBattleList() {
@@ -288,8 +311,10 @@ export default {
           height: 19px;
           font-size: 15px;
           color: #ffffff;
-          opacity: 0.5;
           margin: 15px;
+        }
+        .selected {
+          color: #fbff97;
         }
       }
     }
@@ -330,7 +355,12 @@ export default {
               color: #cdd6ff;
             }
             .nameActive {
-              color: #fbff97;
+              color: #69a82d;
+              border: 1px solid #69a82d;
+              border-radius: 5px;
+            }
+            .nameLoser {
+              text-decoration: line-through; // 文字删除
             }
           }
           .el-divider--horizontal {

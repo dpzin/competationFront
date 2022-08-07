@@ -67,7 +67,7 @@ export default {
       const ref = this
       // ws地址
       var wsuri = process.env.VUE_APP_WS_API + '/bjss/webSocket/' + this.socketId
-      console.log(wsuri)
+      // console.log(wsuri)
       websock = new WebSocket(wsuri)
       websock.onmessage = (e) => {
         ref.websocketonmessage(e)
@@ -82,7 +82,7 @@ export default {
       // 连接发生错误的回调方法
       websock.onerror = (e) => {
         ref.reconnect()
-        console.log('WebSocket连接发生错误')
+        // console.log('WebSocket连接发生错误')
       }
     },
     uuid() {
@@ -99,7 +99,7 @@ export default {
       return uuid
     },
     websocketonmessage(e) {
-      console.log('接受到的消息:' + e.data)
+      // console.log('接受到的消息:' + e.data)
       const socketMessage = JSON.parse(e.data)
 
       if (socketMessage) {
@@ -115,7 +115,7 @@ export default {
       websock.send(JSON.stringify(agentData))
     },
     websocketclose(e) {
-      console.log('connection closed (' + e.code + ')')
+      // console.log('connection closed (' + e.code + ')')
     },
     sendSock(agentData, callback) {
       const ref = this

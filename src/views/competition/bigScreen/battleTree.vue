@@ -7,7 +7,7 @@
     <div class="main">
       <div class="left">
         <div
-          v-if="user.left.roundOne.length > 0"
+          v-if="user.left.roundOne && user.left.roundOne.length > 0"
           class="roundOne"
         >
           <div
@@ -16,7 +16,7 @@
             class="name"
           >{{ item.name }}</div>
         </div>
-        <div v-if="user.left.roundOne.length > 0">
+        <div v-if="user.left.roundOne && user.left.roundOne.length > 0">
           <div
             v-for="(item) in 8"
             :key="item"
@@ -63,7 +63,7 @@
       <div class="center">
         <div class="type">{{ competitionProjectName }}</div>
         <div class="winner">WINNER</div>
-        <div class="champion">冠军</div>
+        <div class="champion">{{ championName }}</div>
         <div class="roundFive">
           <div class="name">{{ user.left.roundFive[0].name }}</div>
           <div class="line1" />
@@ -107,7 +107,7 @@
             class="name"
           >{{ item.name }}</div>
         </div>
-        <div v-if="user.right.roundOne.length > 0">
+        <div v-if="user.right.roundOne && user.right.roundOne.length > 0">
           <div
             v-for="(item) in 8"
             :key="item"
@@ -115,7 +115,7 @@
           />
         </div>
         <div
-          v-if="user.right.roundOne.length > 0"
+          v-if="user.right.roundOne && user.right.roundOne.length > 0"
           class="roundOne"
         >
           <div
@@ -126,10 +126,11 @@
         </div>
       </div>
     </div>
+    <div class="logo">本赛事系统由苏州工业园区不羁软件工作室提供</div>
   </div>
 </template>
 <script>
-import { listBigScreenBattleInfo, getCompetitionProject } from '@/api/competition'
+import { listBigScreenBattleInfo, getCompetitionProject, getChampionByProjectId } from '@/api/competition'
 export default {
   props: {
     competitionProjectId: {
@@ -145,6 +146,7 @@ export default {
     return {
       user: {},
       competitionProjectName: '',
+      championName: '冠军',
       widthRate: '1',
       heightRate: '1'
     }
@@ -167,6 +169,9 @@ export default {
       })
       getCompetitionProject({ ids: [this.competitionProjectId] }).then(res => {
         this.competitionProjectName = res.data[0].name
+      })
+      getChampionByProjectId({ id: this.competitionProjectId }).then(res => {
+        this.championName = res.data.name
       })
     }
   }
@@ -203,6 +208,8 @@ export default {
       line-height: calc(40px * var(--heightRate));
       background: url("../../../assets/competition/user.svg") no-repeat;
       background-size: 100% 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .roundOne {
       display: flex;
@@ -345,6 +352,16 @@ export default {
         }
       }
     }
+  }
+  .logo {
+    position: fixed;
+    bottom: 5%;
+    right: 50%;
+    transform: translate(50%);
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 10px;
+    opacity: 0.5;
   }
 }
 </style>

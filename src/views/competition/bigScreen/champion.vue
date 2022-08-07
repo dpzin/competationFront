@@ -6,7 +6,7 @@
     </div>
     <div class="champion">CHAMPION</div>
     <div class="name">{{ championName }}</div>
-    <div class="logo" />
+    <div class="logo">本赛事系统由苏州工业园区不羁软件工作室提供</div>
   </div>
 </template>
 
@@ -61,40 +61,50 @@ export default {
     background-size: 100% 100%;
   }
   .type {
-    margin-top: 80px;
+    margin-top: 60px;
     text-align: center;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
     color: #fbff97;
   }
   .champion {
-    margin-top: 120px;
+    margin-top: 6%;
     color: #fbff97;
     text-align: center;
     font-weight: 900;
     font-size: 140px;
   }
   .name {
-    width: 450px;
-    height: 137px;
-    line-height: 137px;
+    width: 600px;
+    height: 140px;
+    line-height: 140px;
     background: url("../../../assets/competition/champion.png") no-repeat;
     background-size: 100% 100%;
     text-align: center;
     font-size: 60px;
     font-weight: 600;
     color: #fbff97;
-    margin: 80px auto 0;
+    margin: 8% auto 0;
   }
+  // .logo {
+  //   width: 280px;
+  //   height: 90px;
+  //   background: url("../../../assets/logo.png") no-repeat;
+  //   background-size: 100% 100%;
+  //   position: fixed;
+  //   bottom: 50px;
+  //   right: 50%;
+  //   transform: translate(50%);
+  // }
   .logo {
-    width: 280px;
-    height: 90px;
-    background: url("../../../assets/logo.png") no-repeat;
-    background-size: 100% 100%;
     position: fixed;
-    bottom: 50px;
+    bottom: 5%;
     right: 50%;
     transform: translate(50%);
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 10px;
+    opacity: 0.5;
   }
 }
 </style>
