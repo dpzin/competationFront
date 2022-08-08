@@ -93,7 +93,9 @@
             <el-tag
               :type="row.role === 'common'? '' : 'danger'"
               size="small"
-            >{{ row.role }}</el-tag>
+            >
+              {{ row.role }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -114,6 +116,10 @@
             >已签到</el-tag>
           </template>
         </el-table-column>
+        <el-table-column
+          prop="telephone"
+          label="手机号"
+        />
         <el-table-column
           v-if="!finishFlag"
           label="操作"
