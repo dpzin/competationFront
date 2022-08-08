@@ -15,7 +15,8 @@
         >{{ item.role }}</div>
       </div>
     </div>
-    <div class="logo" />
+    <!-- <div class="logo" /> -->
+    <div class="logo">本赛事系统由苏州工业园区不羁软件工作室提供</div>
   </div>
 </template>
 
@@ -45,7 +46,6 @@ export default {
     getSeaSelectMember() {
       listSeaSelection({ competitionProjectId: this.competitionProjectId }).then(res => {
         this.list = res.data
-        console.log(res.data)
       })
       getCompetitionProject({ ids: [this.competitionProjectId] }).then(res => {
         this.competitionProjectName = res.data[0].name
@@ -91,12 +91,12 @@ export default {
     flex-wrap: wrap;
     justify-content: space-between;
     .user {
-      width: 180px;
+      flex: 0 0 12.5%;
       text-align: center;
       margin-bottom: 30px;
       height: 70px;
       .userName {
-        width: 180px;
+        width: 89.5%;
         height: 60px;
         line-height: 60px;
         font-size: 27px;
@@ -104,23 +104,35 @@ export default {
         color: #ffffff;
         background: url("../../../assets/competition/user.svg") no-repeat;
         background-size: 100% 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .guest {
-        width: 180px;
+        width: 89.5%;
         font-size: 14px;
         color: #fbff97;
       }
     }
   }
+  // .logo {
+  //   width: 280px;
+  //   height: 90px;
+  //   background: url("../../../assets/logo.png") no-repeat;
+  //   background-size: 100% 100%;
+  //   position: fixed;
+  //   bottom: 50px;
+  //   right: 50%;
+  //   transform: translate(50%);
+  // }
   .logo {
-    width: 280px;
-    height: 90px;
-    background: url("../../../assets/logo.png") no-repeat;
-    background-size: 100% 100%;
     position: fixed;
-    bottom: 50px;
+    bottom: 5%;
     right: 50%;
     transform: translate(50%);
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 10px;
+    opacity: 0.5;
   }
 }
 </style>
