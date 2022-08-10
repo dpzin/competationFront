@@ -267,6 +267,8 @@ export default {
     },
     // 文件地址处理
     formatFile(file) {
+      console.log('this.competition.sponsorUrlList', this.competition.sponsorUrlList)
+      console.log(file)
       if (file.length === 1) {
         const str = file[0].url
         return str.slice(str.indexOf('/image'))
@@ -281,9 +283,9 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确定要提交表单吗？').then(_ => {
-            this.competition.posterUrl = this.formatFile(this.competition.posterUrl)
-            this.competition.coverUrl = this.formatFile(this.competition.coverUrl)
-            this.competition.battleIconUrl = this.formatFile(this.competition.battleIconUrl)
+            // this.competition.posterUrl = this.formatFile(this.competition.posterUrl)
+            // this.competition.coverUrl = this.formatFile(this.competition.coverUrl)
+            // this.competition.battleIconUrl = this.formatFile(this.competition.battleIconUrl)
             this.competition.sponsorUrlList = this.formatFile(this.competition.sponsorUrlList)
             const api = this.$route.query.id ? updateCompetition({ ...this.competition, id: this.$route.query.id }) : addCompetition(this.competition)
             api.then(res => {

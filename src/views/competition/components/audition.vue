@@ -190,7 +190,7 @@
             >{{ row.role }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="裁判">
+        <el-table-column label="裁判（10分制）">
           <el-table-column
             v-for="judge in judgesList"
             :key="judge.id"
@@ -203,7 +203,8 @@
                 :ref="judge.id"
                 v-model="row[judge.id]"
                 size="small"
-                :max="100"
+                :max="10"
+                :precision="1"
                 @keyup.enter.native="$event.target.blur"
                 @blur="enterScope(row, judge.id, $index)"
               />

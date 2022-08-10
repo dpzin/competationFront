@@ -71,34 +71,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/competition/competitors',
-  //   component: () => import('@/views/competition/bigScreen/competitors'),
-  //   name: '参赛选手',
-  //   meta: { title: '参赛选手', icon: 'el-icon-user' },
-  //   hidden: true
-  // },
-  // {
-  //   path: '/competition/battleTree',
-  //   component: () => import('@/views/competition/bigScreen/battleTree'),
-  //   name: '对战图',
-  //   meta: { title: 'battleTree', icon: 'tree-table' },
-  //   hidden: true
-  // },
-  // {
-  //   path: '/competition/battle',
-  //   component: () => import('@/views/competition/bigScreen/battle'),
-  //   name: 'battle',
-  //   meta: { title: 'battle', icon: '' },
-  //   hidden: true
-  // },
-  // {
-  //   path: '/competition/champion',
-  //   component: () => import('@/views/competition/bigScreen/champion'),
-  //   name: 'champion',
-  //   meta: { title: 'champion', icon: '' },
-  //   hidden: true
-  // },
   {
     path: '/competition/bigScreen',
     component: () => import('@/views/competition/bigScreen'),
@@ -110,6 +82,13 @@ export const constantRoutes = [
     path: '/competition/controller',
     component: () => import('@/views/competition/controller'),
     name: 'controller',
+    hidden: true,
+    Layout: false
+  },
+  {
+    path: '/competition/judge',
+    component: () => import('@/views/competition/judge'),
+    name: 'judge',
     hidden: true,
     Layout: false
   },

@@ -75,7 +75,7 @@
                 <div class="name-line">
                   <div
                     class="name"
-                    :class="{nameActive: battle.win === battle.leftMemberId, nameLoser: battle.win !== battle.leftMemberId}"
+                    :class="{nameActive: battle.win === battle.leftMemberId, nameLoser: battle.win && battle.win !== battle.leftMemberId}"
                   >{{ battle.leftMemberName }}</div>
                   <img
                     src="../../assets/competition/vs.png"
@@ -83,7 +83,7 @@
                   >
                   <div
                     class="name"
-                    :class="{nameActive: battle.win === battle.rightMemberId, nameLoser: battle.win !== battle.rightMemberId}"
+                    :class="{nameActive: battle.win === battle.rightMemberId, nameLoser: battle.win && battle.win !== battle.rightMemberId}"
                   >{{ battle.rightMemberName }}</div>
                 </div>
                 <el-divider />
