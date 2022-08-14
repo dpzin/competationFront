@@ -86,9 +86,16 @@ export const constantRoutes = [
     Layout: false
   },
   {
-    path: '/competition/judge',
-    component: () => import('@/views/competition/judge'),
+    path: '/judge',
+    component: () => import('@/views/judge'),
     name: 'judge',
+    hidden: true,
+    Layout: false
+  },
+  {
+    path: '/checkScore',
+    component: () => import('@/views/checkScore'),
+    name: 'checkScore',
     hidden: true,
     Layout: false
   },

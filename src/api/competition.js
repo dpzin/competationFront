@@ -124,3 +124,8 @@ export const getChampionByProjectId = (params) => {
 export const downloadSeaMemberExcel = (params) => {
   return request.get('/downloadSeaMemberExcel', { ...params })
 }
+
+// 更新裁判状态
+export const updateJudge = (params) => {
+  return request.post('/updateJudge', { ...params })
+}
