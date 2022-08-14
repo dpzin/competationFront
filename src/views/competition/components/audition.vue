@@ -210,6 +210,7 @@
                 v-model="row[judge.id]"
                 size="small"
                 :max="10"
+                :min="0"
                 :precision="1"
                 @keyup.enter.native="$event.target.blur"
                 @blur="enterScope(row, judge.id, $index)"

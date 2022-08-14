@@ -12,8 +12,8 @@
         label="排序"
         width="70px"
       >
-        <template>
-          <span>{{ index +1 }}</span>
+        <template slot-scope="{row,$index}">
+          <span>{{ $index +1 }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -45,8 +45,7 @@ export default {
     }
   },
   created() {
-    // this.getContestantList()
-    console.log('111')
+    this.getContestantList()
   },
   methods: {
     async getContestantList() {

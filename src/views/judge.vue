@@ -1,6 +1,9 @@
 <template>
   <div class="judgePage">
-    <div v-if="!finish">
+    <div
+      v-if="!finish"
+      style="height: 100%"
+    >
       <div class="header">
         <div><i class="el-icon-user-solid" /><span style="margin-left: 10px">JUDGE：{{ judgeName }}</span></div>
         <div><i class="el-icon-trophy-1" /><span style="margin-left: 10px">舞种：{{ projectName }}</span></div>
@@ -32,6 +35,7 @@
               v-model="row.score"
               size="small"
               :max="10"
+              :min="0"
               :precision="1"
               controls-position="right"
               @keyup.enter.native="$event.target.blur"
@@ -166,7 +170,10 @@ export default {
             name: item.name
           }
           if (item.scores.length > 0) {
-            obj.score = item.scores.find(score => score.competitionJudgeId === this.judgeId).scope
+            const target = item.scores.find(score => score.competitionJudgeId === this.judgeId)
+            if (target) {
+              obj.score = target.scope
+            }
             if (obj.score) {
               this.already += 1
             }
@@ -179,22 +186,25 @@ export default {
     },
     // 录入分数
     enterScope(row, index) {
-      // this.$nextTick(_ => {
-      //   this.$refs[competitionJudgeId].$refs.input.blur()
-      // })
-      inputScore({ competitionJudgeId: this.judgeId, competitionMemberId: row.id, scope: row.score }).then(res => {
-        this.$message({
-          message: '分数录入成功！',
-          type: 'success'
-        })
-        this.$set(this.contestantList, index, row)
-        this.already = 0
-        this.contestantList.map(item => {
-          if (item.score) {
-            this.already += 1
+      if (row.score) {
+        inputScore({ competitionJudgeId: this.judgeId, competitionMemberId: row.id, scope: row.score }).then(res => {
+          this.$message({
+            message: '分数录入成功！',
+            type: 'success'
+          })
+          this.$set(this.contestantList, index, row)
+          if (index === 9) {
+            this.getContestantList()
           }
+          this.already = 0
+          this.contestantList.map((item, index) => {
+            if (item.score) {
+              this.already += 1
+            }
+          })
         })
-      })
+      }
+      return
     },
     async judgeSubmit() {
       updateJudge({ id: this.judgeId, status: '1' }).then(res => {
