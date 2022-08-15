@@ -543,7 +543,7 @@ export default {
           item.scores.map(score => {
             obj[score.competitionJudgeId] = score.scope
             obj[score.competitionJudgeId + 'edit'] = false
-            obj.allScore += score.scope
+            obj.allScore = parseFloat((obj.allScore + score.scope).toFixed(1))
           })
           return obj
         })

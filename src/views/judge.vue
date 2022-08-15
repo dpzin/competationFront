@@ -15,6 +15,7 @@
         fit
         highlight-current-row
         style="width: 100%;"
+        height="calc(100% - 128px)"
       >
         <el-table-column
           prop="no"

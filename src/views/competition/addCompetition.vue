@@ -137,7 +137,7 @@
           <i class="el-icon-plus" />
         </el-upload>
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         label="赞助商LOGO"
         prop="sponsorUrlList"
       >
@@ -150,7 +150,7 @@
         >
           <i class="el-icon-plus" />
         </el-upload>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button @click="resetForm()">
           取消
@@ -247,9 +247,9 @@ export default {
       this.competition.battleIconUrl = [{ url: this.domain + res.data }]
     },
     // 上传赞助商logo
-    sponsorSuccess(res) {
-      this.competition.sponsorUrlList.push({ url: this.domain + res.data })
-    },
+    // sponsorSuccess(res) {
+    //   this.competition.sponsorUrlList.push({ url: this.domain + res.data })
+    // },
     // 清空表单并移除校验
     resetForm() {
       this.competition = {
@@ -283,10 +283,10 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.$confirm('确定要提交表单吗？').then(_ => {
-            // this.competition.posterUrl = this.formatFile(this.competition.posterUrl)
-            // this.competition.coverUrl = this.formatFile(this.competition.coverUrl)
-            // this.competition.battleIconUrl = this.formatFile(this.competition.battleIconUrl)
-            this.competition.sponsorUrlList = this.formatFile(this.competition.sponsorUrlList)
+            this.competition.posterUrl = this.formatFile(this.competition.posterUrl)
+            this.competition.coverUrl = this.formatFile(this.competition.coverUrl)
+            this.competition.battleIconUrl = this.formatFile(this.competition.battleIconUrl)
+            // this.competition.sponsorUrlList = this.formatFile(this.competition.sponsorUrlList)
             const api = this.$route.query.id ? updateCompetition({ ...this.competition, id: this.$route.query.id }) : addCompetition(this.competition)
             api.then(res => {
               this.resetForm()

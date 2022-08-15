@@ -8,10 +8,7 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column
-        label="排序"
-        width="70px"
-      >
+      <el-table-column label="排序">
         <template slot-scope="{row,$index}">
           <span>{{ $index +1 }}</span>
         </template>
@@ -19,16 +16,16 @@
       <el-table-column
         prop="no"
         label="号码牌"
-        width="70px"
       />
       <el-table-column
         prop="name"
         label="姓名"
-        width="140px"
+        min-width="110px"
       />
       <el-table-column
         prop="score"
         label="分数（10分制）"
+        min-width="140px"
       />
     </el-table>
   </div>
