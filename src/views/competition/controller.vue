@@ -243,11 +243,13 @@ export default {
           message: '海选尚未完成，不可操作！',
           type: 'error'
         })
+        return
       } else if (type === 'champion' && processStatus !== '2') {
         this.$message({
           message: '冠军尚未产生，不可操作！',
           type: 'error'
         })
+        return
       } else {
         const params = {
           competitionId: this.competitionId,

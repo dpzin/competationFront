@@ -25,6 +25,7 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
+    console.log(error, 'error---')
     return Promise.reject(error)
   }
 )
@@ -44,25 +45,32 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     // if the custom code is not 20000, it is judged as an error.
+    console.log('response', response)
     if (res.errorCode !== undefined && res.errorCode !== 'BattleInfoError') {
+      console.log(res, '=====')
       Message({
         message: res.errorMessage,
         type: 'error',
+
         duration: 2 * 1000
       })
     } else {
+      console.log('res', res)
       return res
     }
   },
   error => {
     if (error.message.includes('timeout')) {
+      console.log(error, 'error')
       Message({
         message: '网络异常',
         type: 'error',
         duration: 2 * 1000
       })
     }
-
+    if (error.response.data.errorCode === 'BattleInfoError') {
+      return Promise.resolve(error.response.data)
+    }
     Message({
       message: error.response.data.message || '出错啦',
       type: 'error',
