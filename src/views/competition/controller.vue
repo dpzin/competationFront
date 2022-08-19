@@ -196,6 +196,7 @@ export default {
     },
     // task切换事件
     taskChange(task) {
+      this.task = task
       this.getBattleList(task)
     },
     // 获取对战列表
@@ -229,6 +230,7 @@ export default {
       if (this.winner) {
         judgeWinner({ battleId: this.battleOptions.id, winnerId: this.winner }).then(res => {
           this.dialogVisible = false
+          this.getBattleList(this.task)
         })
       }
     },
